@@ -1,4 +1,4 @@
-package org.relaxindia
+package org.relaxindia.driver
 
 import org.junit.Test
 
