@@ -3,17 +3,15 @@ package org.relaxindia.driver
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import kotlinx.android.synthetic.main.activity_login.*
+import kotlinx.android.synthetic.main.activity_otp.*
 
-class LoginActivity : AppCompatActivity() {
+class OtpActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_login)
-
-        login_continue.button.setOnClickListener {
-            startActivity(Intent(this, OtpActivity::class.java))
+        setContentView(R.layout.activity_otp)
+        otp_proceed.button.setOnClickListener {
+            startActivity(Intent(this,DashboardActivity::class.java))
         }
-
     }
 
     override fun startActivity(intent: Intent?) {
@@ -25,4 +23,5 @@ class LoginActivity : AppCompatActivity() {
         super.onBackPressed()
         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
     }
+
 }
