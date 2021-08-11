@@ -21,6 +21,10 @@ class RegisterActivity : AppCompatActivity() {
             startActivity(Intent(this, DashboardActivity::class.java))
         }
 
+        register_back.setOnClickListener {
+            onBackPressed()
+        }
+
     }
 
     override fun startActivity(intent: Intent?) {

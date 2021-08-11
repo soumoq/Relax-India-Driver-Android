@@ -13,7 +13,9 @@
             android:id="@+id/menu_your_journey"
             android:title="Your Journey" />
 
-        <item android:title="Notification" />
+        <item
+            android:id="@+id/menu_notification"
+            android:title="Notification" />
 
         <item
             android:id="@+id/menu_profile"
