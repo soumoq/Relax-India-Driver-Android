@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Html
 import kotlinx.android.synthetic.main.activity_login.*
+import kotlinx.android.synthetic.main.activity_login.terms_service
+import kotlinx.android.synthetic.main.activity_register.*
 
 class RegisterActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -14,6 +16,10 @@ class RegisterActivity : AppCompatActivity() {
         val text =
             "I certify that the information provided is true & correct and I also agree the </font>and <font color=#1b9ff1>Terms & Condition</font>"
         terms_service.text = Html.fromHtml(text)
+
+        do_register.setOnClickListener {
+            startActivity(Intent(this, DashboardActivity::class.java))
+        }
 
     }
 

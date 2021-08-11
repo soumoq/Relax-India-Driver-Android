@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+    <group
+        android:id="@+id/nav_dashboard_group"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/menu_home"
+            android:title="Home" />
+
+        <item
+            android:id="@+id/menu_your_journey"
+            android:title="Your Journey" />
+
+        <item android:title="Notification" />
+
+        <item
+            android:id="@+id/menu_profile"
+            android:title="My Profile" />
+
+        <item android:title="Share App" />
+
+        <item android:title="Support" />
+
+
+    </group>
+
+</menu>
