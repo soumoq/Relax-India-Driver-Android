@@ -160,9 +160,11 @@
                     app:hintEnabled="true">
 
                     <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/issue_date"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:imeOptions="actionNext"
+                        android:focusable="false"
                         android:textSize="16sp" />
 
 
@@ -179,9 +181,11 @@
                     app:hintEnabled="true">
 
                     <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/expiry_date"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:imeOptions="actionNext"
+                        android:focusable="false"
                         android:textSize="16sp" />
 
 
