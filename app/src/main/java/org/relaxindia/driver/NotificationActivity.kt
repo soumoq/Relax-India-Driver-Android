@@ -14,6 +14,10 @@ class NotificationActivity : AppCompatActivity() {
             onBackPressed()
         }
 
+        open_notification_details.setOnClickListener {
+            startActivity(Intent(this, NotificationDetailsActivity::class.java))
+        }
+
     }
 
     override fun startActivity(intent: Intent?) {

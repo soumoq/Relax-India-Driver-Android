@@ -10,6 +10,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.RelaxIndiaDriver">
         <activity
+            android:name=".ThankYouActivity"
+            android:exported="true" />
+        <activity
+            android:name=".NotificationDetailsActivity"
+            android:exported="true" />
+        <activity
             android:name=".OtpActivity"
             android:exported="true" />
         <activity
