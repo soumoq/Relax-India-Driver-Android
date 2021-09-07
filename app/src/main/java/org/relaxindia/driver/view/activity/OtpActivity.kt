@@ -1,16 +1,17 @@
-package org.relaxindia.driver
+package org.relaxindia.driver.view.activity
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import kotlinx.android.synthetic.main.activity_otp.*
+import org.relaxindia.driver.R
 
 class OtpActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_otp)
         otp_proceed.button.setOnClickListener {
-            startActivity(Intent(this,DashboardActivity::class.java))
+            startActivity(Intent(this, DashboardActivity::class.java))
         }
     }
 

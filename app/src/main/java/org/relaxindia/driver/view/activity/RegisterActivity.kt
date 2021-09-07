@@ -1,4 +1,4 @@
-package org.relaxindia.driver
+package org.relaxindia.driver.view.activity
 
 import android.app.DatePickerDialog
 import android.content.ActivityNotFoundException
@@ -11,6 +11,7 @@ import android.text.Html
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_login.terms_service
 import kotlinx.android.synthetic.main.activity_register.*
+import org.relaxindia.driver.R
 import java.text.SimpleDateFormat
 import java.util.*
 

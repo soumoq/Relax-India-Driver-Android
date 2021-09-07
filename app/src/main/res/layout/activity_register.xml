@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".RegisterActivity">
+    tools:context=".view.activity.RegisterActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/register_toolbar"

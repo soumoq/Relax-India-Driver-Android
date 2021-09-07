@@ -1,4 +1,4 @@
-package org.relaxindia.driver
+package org.relaxindia.driver.view.activity
 
 import android.content.DialogInterface
 import android.content.Intent
@@ -9,6 +9,7 @@ import androidx.appcompat.app.AlertDialog
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.android.synthetic.main.activity_notification_details.*
 import kotlinx.android.synthetic.main.sheet_notification_details.*
+import org.relaxindia.driver.R
 
 class NotificationDetailsActivity : AppCompatActivity() {
 

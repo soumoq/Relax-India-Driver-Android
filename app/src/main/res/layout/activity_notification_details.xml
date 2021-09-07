@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     android:orientation="vertical"
-    tools:context=".NotificationDetailsActivity">
+    tools:context=".view.activity.NotificationDetailsActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/register_toolbar"

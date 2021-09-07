@@ -1,4 +1,4 @@
-package org.relaxindia.driver
+package org.relaxindia.driver.util
 
 import android.content.Context
 import android.content.DialogInterface

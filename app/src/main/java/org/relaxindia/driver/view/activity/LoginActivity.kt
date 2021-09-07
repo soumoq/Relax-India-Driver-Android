@@ -1,21 +1,18 @@
-package org.relaxindia.driver
+package org.relaxindia.driver.view.activity
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import kotlinx.android.synthetic.main.activity_notifiaction.*
+import kotlinx.android.synthetic.main.activity_login.*
+import org.relaxindia.driver.R
 
-class NotificationActivity : AppCompatActivity() {
+class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_notifiaction)
+        setContentView(R.layout.activity_login)
 
-        notification_back.setOnClickListener {
-            onBackPressed()
-        }
-
-        open_notification_details.setOnClickListener {
-            startActivity(Intent(this, NotificationDetailsActivity::class.java))
+        login_continue.button.setOnClickListener {
+            startActivity(Intent(this, OtpActivity::class.java))
         }
 
     }
@@ -29,5 +26,4 @@ class NotificationActivity : AppCompatActivity() {
         super.onBackPressed()
         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
     }
-
 }

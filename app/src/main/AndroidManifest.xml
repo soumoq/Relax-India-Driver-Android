@@ -10,28 +10,28 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.RelaxIndiaDriver">
         <activity
-            android:name=".ThankYouActivity"
+            android:name=".view.activity.ThankYouActivity"
             android:exported="true" />
         <activity
-            android:name=".NotificationDetailsActivity"
+            android:name=".view.activity.NotificationDetailsActivity"
             android:exported="true" />
         <activity
-            android:name=".OtpActivity"
+            android:name=".view.activity.OtpActivity"
             android:exported="true" />
         <activity
-            android:name=".NotificationActivity"
+            android:name=".view.activity.NotificationActivity"
             android:exported="true" />
         <activity
-            android:name=".DashboardActivity"
+            android:name=".view.activity.DashboardActivity"
             android:exported="true" />
         <activity
-            android:name=".RegisterActivity"
+            android:name=".view.activity.RegisterActivity"
             android:exported="true" />
         <activity
-            android:name=".LoginActivity"
+            android:name=".view.activity.LoginActivity"
             android:exported="true" />
         <activity
-            android:name=".MainActivity"
+            android:name=".view.activity.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
