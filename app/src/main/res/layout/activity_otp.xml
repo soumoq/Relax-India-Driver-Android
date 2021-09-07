@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".OtpActivity">
+    tools:context="OtpActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -58,18 +58,22 @@
                     android:text="Enter the 6-digit code send to \n+91******"
                     android:textSize="15sp" />
 
-                <EditText
+                <com.poovam.pinedittextfield.SquarePinField
                     android:id="@+id/pin_view"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginLeft="12dp"
                     android:layout_marginTop="25dp"
                     android:layout_marginRight="12dp"
-                    android:gravity="center"
                     android:inputType="number"
                     android:textColor="@color/black"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    app:cornerRadius="15dp"
+                    app:highlightColor="@color/app_color"
+                    app:highlightType="currentField"
+                    app:lineThickness="1dp"
+                    app:noOfFields="6" />
 
                 <com.dagang.library.GradientButton
                     android:id="@+id/otp_proceed"
