@@ -5,6 +5,13 @@ import android.content.DialogInterface
 import androidx.appcompat.app.AlertDialog
 
 object App {
+    const val agree =
+        "I certify that the information provided is true & correct and I also agree the </font>and <font color=#1b9ff1>Terms & Condition</font>"
+
+    //API String
+    const val apiBaseUrl = "http://itmartsolution.com/demo/relaxindia.org/api/v1/driver/"
+    const val apiLogin = "login"
+    const val register = "register"
 
     fun openDialog(context: Context, title: String, message: String) {
         //val intent = Intent(context, TripAnalyzeActivity::class.java)
