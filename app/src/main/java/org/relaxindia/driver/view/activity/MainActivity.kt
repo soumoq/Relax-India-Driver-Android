@@ -6,6 +6,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatDelegate
 import kotlinx.android.synthetic.main.activity_main.*
 import org.relaxindia.driver.R
+import org.relaxindia.driver.util.App
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -22,6 +23,17 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(this, RegisterActivity::class.java))
         }
 
+    }
+
+    override fun onResume() {
+        super.onResume()
+        val sp = applicationContext.getSharedPreferences("user_info", MODE_PRIVATE)
+        val id = sp.getString(App.preferenceUserToken, "")
+        if (!(id.equals(""))) {
+            val intent = Intent(this, DashboardActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
+        }
     }
 
     override fun startActivity(intent: Intent?) {

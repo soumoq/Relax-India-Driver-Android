@@ -3,6 +3,7 @@ package org.relaxindia.driver.util
 import android.content.Context
 import android.content.DialogInterface
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 
 object App {
     const val agree =
@@ -12,6 +13,15 @@ object App {
     const val apiBaseUrl = "http://itmartsolution.com/demo/relaxindia.org/api/v1/driver/"
     const val apiLogin = "login"
     const val register = "register"
+    const val verifyOtp = "verify-otp"
+
+    //Share preference key
+    const val preferenceUserToken = "user_token"
+
+    fun getUserToken(context: Context): String {
+        val sp = context.getSharedPreferences("user_info", AppCompatActivity.MODE_PRIVATE)
+        return "Bearer ${(sp.getString(App.preferenceUserToken, "").toString())}"
+    }
 
     fun openDialog(context: Context, title: String, message: String) {
         //val intent = Intent(context, TripAnalyzeActivity::class.java)

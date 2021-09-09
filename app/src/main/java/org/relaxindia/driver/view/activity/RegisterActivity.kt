@@ -71,7 +71,7 @@ class RegisterActivity : AppCompatActivity() {
         apiCallViewModel.register.observe(this, androidx.lifecycle.Observer {
             if (!it.error) {
                 val intent = Intent(this, OtpActivity::class.java)
-                intent.putExtra("phone", register_mobile.text.toString())
+                intent.putExtra("phone_number", register_mobile.text.toString())
                 startActivity(intent)
             } else {
                 App.openDialog(this, "Error", it.message)

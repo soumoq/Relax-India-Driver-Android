@@ -12,11 +12,16 @@ import retrofit2.Response
 import org.relaxindia.driver.model.GlobalResponse
 import org.relaxindia.driver.retrofit.ApiCallService
 import org.relaxindia.driver.retrofit.RestApiServiceBuilder
+import org.relaxindia.driver.util.App
+import org.relaxindia.model.otp.OtpData
+import org.relaxindia.model.otp.OtpResponse
 
 
 class ApiCallViewModel : ViewModel() {
     val LOG = "ApiCallViewModel"
     val register = MutableLiveData<GlobalResponse>()
+    val verifyOtp = MutableLiveData<OtpResponse>()
+
 
     lateinit var progressDialog: ProgressDialog
 
@@ -47,8 +52,7 @@ class ApiCallViewModel : ViewModel() {
                     register.value = response.body()
                     Log.e("$LOG-registerInfo-if", "Success")
                 } else {
-                    //register.value = response.errorBody()
-                    Log.e("$LOG-registerInfo-else", "Else: $name $email $phone $password $cPassword \t" + response.errorBody())
+                    App.openDialog(context, "Error", "Email id or phone number already register.")
                 }
             }
 
@@ -59,6 +63,36 @@ class ApiCallViewModel : ViewModel() {
         })
 
 
+    }
+
+    fun verifyOtpInfo(context: Context, phone: String, otp: String) {
+        progressDialog = ProgressDialog(context)
+        progressDialog.setTitle("Please wait")
+        progressDialog.setMessage("Please wait we verify your otp")
+        progressDialog.show()
+
+        val response: Call<OtpResponse> =
+            restApiService.verifyOtp(phone, otp)
+
+        response.enqueue(object : Callback<OtpResponse> {
+            override fun onResponse(
+                call: Call<OtpResponse>,
+                response: Response<OtpResponse>
+            ) {
+                progressDialog.dismiss()
+                if (response.isSuccessful) {
+                    verifyOtp.value = response.body()
+                    Log.e("$LOG-verifyOtpInfo-if", "Success")
+                } else {
+                    App.openDialog(context, "Error", "Something went wrong with otp.")
+                }
+            }
+
+            override fun onFailure(call: Call<OtpResponse>, t: Throwable) {
+                progressDialog.dismiss()
+                Log.e("$LOG-verifyOtpInfo-onFailure", "${t.message}")
+            }
+        })
     }
 
 
