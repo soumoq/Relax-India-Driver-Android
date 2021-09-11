@@ -33,9 +33,6 @@ class OtpActivity : AppCompatActivity() {
         resend_sms.text = Html.fromHtml(text)
         otp_phone_number_display.text = "Enter the 6-digit code send to \n$phoneNumber"
 
-        otp_proceed.button.setOnClickListener {
-            startActivity(Intent(this, DashboardActivity::class.java))
-        }
 
         otp_proceed.button.setOnClickListener {
             apiCallViewModel.verifyOtpInfo(

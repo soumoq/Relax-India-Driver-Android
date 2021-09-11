@@ -13,14 +13,14 @@ import org.relaxindia.driver.model.GlobalResponse
 import org.relaxindia.driver.retrofit.ApiCallService
 import org.relaxindia.driver.retrofit.RestApiServiceBuilder
 import org.relaxindia.driver.util.App
-import org.relaxindia.model.otp.OtpData
-import org.relaxindia.model.otp.OtpResponse
+import org.relaxindia.driver.model.otp.UserToken
 
 
 class ApiCallViewModel : ViewModel() {
     val LOG = "ApiCallViewModel"
     val register = MutableLiveData<GlobalResponse>()
-    val verifyOtp = MutableLiveData<OtpResponse>()
+    val verifyOtp = MutableLiveData<UserToken>()
+    val login = MutableLiveData<UserToken>()
 
 
     lateinit var progressDialog: ProgressDialog
@@ -71,13 +71,13 @@ class ApiCallViewModel : ViewModel() {
         progressDialog.setMessage("Please wait we verify your otp")
         progressDialog.show()
 
-        val response: Call<OtpResponse> =
+        val response: Call<UserToken> =
             restApiService.verifyOtp(phone, otp)
 
-        response.enqueue(object : Callback<OtpResponse> {
+        response.enqueue(object : Callback<UserToken> {
             override fun onResponse(
-                call: Call<OtpResponse>,
-                response: Response<OtpResponse>
+                call: Call<UserToken>,
+                response: Response<UserToken>
             ) {
                 progressDialog.dismiss()
                 if (response.isSuccessful) {
@@ -88,12 +88,43 @@ class ApiCallViewModel : ViewModel() {
                 }
             }
 
-            override fun onFailure(call: Call<OtpResponse>, t: Throwable) {
+            override fun onFailure(call: Call<UserToken>, t: Throwable) {
                 progressDialog.dismiss()
                 Log.e("$LOG-verifyOtpInfo-onFailure", "${t.message}")
             }
         })
     }
+
+    fun loginInfo(context: Context, phone: String, password: String) {
+        progressDialog = ProgressDialog(context)
+        progressDialog.setTitle("Please wait")
+        progressDialog.setMessage("Please wait we verify your otp")
+        progressDialog.show()
+
+        val response: Call<UserToken> =
+            restApiService.login(phone, password)
+
+        response.enqueue(object : Callback<UserToken> {
+            override fun onResponse(
+                call: Call<UserToken>,
+                response: Response<UserToken>
+            ) {
+                progressDialog.dismiss()
+                if (response.isSuccessful) {
+                    login.value = response.body()
+                    Log.e("$LOG-loginInfo-if", "Success")
+                } else {
+                    App.openDialog(context, "Error", "Something went wrong with username or password.")
+                }
+            }
+
+            override fun onFailure(call: Call<UserToken>, t: Throwable) {
+                progressDialog.dismiss()
+                Log.e("$LOG-loginInfo-onFailure", "${t.message}")
+            }
+        })
+    }
+
 
 
 }

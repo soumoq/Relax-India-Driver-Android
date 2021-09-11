@@ -3,8 +3,7 @@ package org.relaxindia.driver.retrofit
 
 import org.relaxindia.driver.model.GlobalResponse
 import org.relaxindia.driver.util.App
-import org.relaxindia.model.otp.OtpData
-import org.relaxindia.model.otp.OtpResponse
+import org.relaxindia.driver.model.otp.UserToken
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -32,6 +31,15 @@ interface ApiCallService {
         phone: String,
         @Field("otp")
         otp: String
-    ): Call<OtpResponse>
+    ): Call<UserToken>
+
+    @FormUrlEncoded
+    @POST(App.apiLogin)
+    fun login(
+        @Field("phone")
+        phone: String,
+        @Field("password")
+        password: String
+    ): Call<UserToken>
 
 }
