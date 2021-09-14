@@ -3,19 +3,33 @@ package org.relaxindia.driver.view.activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import kotlinx.android.synthetic.main.activity_dashboard.*
 import org.relaxindia.driver.R
+import org.relaxindia.driver.util.App
+import org.relaxindia.driver.util.toast
+import org.relaxindia.driver.viewModel.ApiCallViewModel
 
 class DashboardActivity : AppCompatActivity() {
 
     //nav-header
     lateinit var navHeader: View
 
+    lateinit var apiCallViewModel: ApiCallViewModel
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_dashboard)
+
+        apiCallViewModel = ViewModelProvider(this).get(ApiCallViewModel::class.java)
+        observeViewModel()
+        Log.e("DRIVER_TOKEN", App.getUserToken(this))
+        apiCallViewModel.profileInfo(this,App.getUserToken(this))
 
         open_notification.setOnClickListener {
             startActivity(Intent(this, NotificationActivity::class.java))
@@ -60,9 +74,17 @@ class DashboardActivity : AppCompatActivity() {
         }
 
 
+
     }
 
-    override fun startActivity(intent: Intent?) {
+    private fun observeViewModel() {
+        apiCallViewModel.profileVar.observe(this, Observer {
+
+        })
+    }
+
+
+        override fun startActivity(intent: Intent?) {
         super.startActivity(intent)
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
     }

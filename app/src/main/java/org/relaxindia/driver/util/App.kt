@@ -14,6 +14,7 @@ object App {
     const val apiLogin = "login"
     const val register = "register"
     const val verifyOtp = "verify-otp"
+    const val profile = "profile"
 
     //Share preference key
     const val preferenceUserToken = "user_token"
@@ -24,12 +25,6 @@ object App {
     }
 
     fun openDialog(context: Context, title: String, message: String) {
-        //val intent = Intent(context, TripAnalyzeActivity::class.java)
-        //intent.putExtra("fileName", fileName)
-        //context.startActivity(intent)
-
-
-        // setup the alert builder
         val builder = AlertDialog.Builder(context)
         builder.setTitle(title)
         builder.setMessage(message)
@@ -39,9 +34,6 @@ object App {
 
         })
 
-        // create and show the alert dialog
-
-        // create and show the alert dialog
         val dialog = builder.create()
         dialog.show()
     }

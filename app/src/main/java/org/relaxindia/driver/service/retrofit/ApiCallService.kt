@@ -1,7 +1,8 @@
-package org.relaxindia.driver.retrofit
+package org.relaxindia.driver.service.retrofit
 
 
 import org.relaxindia.driver.model.GlobalResponse
+import org.relaxindia.driver.model.driverProfile.ProfileRes
 import org.relaxindia.driver.util.App
 import org.relaxindia.driver.model.otp.UserToken
 import retrofit2.Call
@@ -41,5 +42,14 @@ interface ApiCallService {
         @Field("password")
         password: String
     ): Call<UserToken>
+
+    @Headers("Content-Type: application/json")
+    @FormUrlEncoded
+    @POST(App.profile)
+    fun profile(
+        @Field("Authorization")
+        authorization: String,
+    ): Call<ProfileRes>
+
 
 }

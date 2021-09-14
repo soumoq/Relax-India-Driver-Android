@@ -1,4 +1,4 @@
-package org.relaxindia.driver.retrofit
+package org.relaxindia.driver.service.retrofit
 
 import com.google.gson.*
 import okhttp3.OkHttpClient

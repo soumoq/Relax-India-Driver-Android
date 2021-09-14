@@ -10,8 +10,9 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import org.relaxindia.driver.model.GlobalResponse
-import org.relaxindia.driver.retrofit.ApiCallService
-import org.relaxindia.driver.retrofit.RestApiServiceBuilder
+import org.relaxindia.driver.model.driverProfile.ProfileRes
+import org.relaxindia.driver.service.retrofit.ApiCallService
+import org.relaxindia.driver.service.retrofit.RestApiServiceBuilder
 import org.relaxindia.driver.util.App
 import org.relaxindia.driver.model.otp.UserToken
 
@@ -21,6 +22,7 @@ class ApiCallViewModel : ViewModel() {
     val register = MutableLiveData<GlobalResponse>()
     val verifyOtp = MutableLiveData<UserToken>()
     val login = MutableLiveData<UserToken>()
+    val profileVar = MutableLiveData<ProfileRes>()
 
 
     lateinit var progressDialog: ProgressDialog
@@ -114,7 +116,11 @@ class ApiCallViewModel : ViewModel() {
                     login.value = response.body()
                     Log.e("$LOG-loginInfo-if", "Success")
                 } else {
-                    App.openDialog(context, "Error", "Something went wrong with username or password.")
+                    App.openDialog(
+                        context,
+                        "Error",
+                        "Something went wrong with username or password."
+                    )
                 }
             }
 
@@ -125,6 +131,40 @@ class ApiCallViewModel : ViewModel() {
         })
     }
 
+    fun profileInfo(context: Context, token:String) {
+        progressDialog = ProgressDialog(context)
+        progressDialog.setTitle("Please wait")
+        progressDialog.setMessage("Please wait, fetching profile info")
+        progressDialog.show()
+        Log.e("$LOG-profileInfo-if-token",token)
+
+        val response: Call<ProfileRes> =
+            restApiService.profile(token)
+
+        response.enqueue(object : Callback<ProfileRes> {
+            override fun onResponse(call: Call<ProfileRes>, response: Response<ProfileRes>) {
+                progressDialog.dismiss()
+                if (response.isSuccessful) {
+                    profileVar.value = response.body()
+                    Log.e("$LOG-profileInfo-if", "Success")
+                } else {
+                    App.openDialog(
+                        context,
+                        "Error",
+                        "Something went wrong with fetching user info."
+                    )
+                }
+            }
+
+            override fun onFailure(call: Call<ProfileRes>, t: Throwable) {
+                progressDialog.dismiss()
+                Log.e("$LOG-profileInfo-onFailure", "${t.localizedMessage} ${call.isCanceled}")
+
+            }
+
+        })
+
+    }
 
 
 }
