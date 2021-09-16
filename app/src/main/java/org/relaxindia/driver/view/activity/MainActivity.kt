@@ -7,12 +7,19 @@ import androidx.appcompat.app.AppCompatDelegate
 import kotlinx.android.synthetic.main.activity_main.*
 import org.relaxindia.driver.R
 import org.relaxindia.driver.util.App
+import org.relaxindia.driver.util.toast
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+
+        if (App.notifyMsg.equals("")){
+
+        }else{
+            toast(App.notifyMsg)
+        }
 
         main_login.setOnClickListener {
             val intent = Intent(this, LoginActivity::class.java)

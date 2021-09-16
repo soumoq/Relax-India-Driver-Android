@@ -6,6 +6,10 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 
 object App {
+
+    //Notificatoin msg
+    var notifyMsg = ""
+
     const val agree =
         "I certify that the information provided is true & correct and I also agree the </font>and <font color=#1b9ff1>Terms & Condition</font>"
 
