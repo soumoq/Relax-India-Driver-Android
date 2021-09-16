@@ -15,6 +15,7 @@ import androidx.lifecycle.ViewModelProvider
 import kotlinx.android.synthetic.main.activity_dashboard.*
 import kotlinx.android.synthetic.main.nav_header.view.*
 import org.relaxindia.driver.R
+import org.relaxindia.driver.service.volly.VollyApi
 import org.relaxindia.driver.util.App
 import org.relaxindia.driver.util.toast
 import org.relaxindia.driver.viewModel.ApiCallViewModel
@@ -40,11 +41,12 @@ class DashboardActivity : AppCompatActivity() {
             val builder = AlertDialog.Builder(this)
             builder.setTitle("New Request from patent")
             val message =
-                "<b>Stating Address :</b> ${App.notifyMsg?.sourceLoc}\n<b>Destination Address :</b> ${App.notifyMsg?.desLoc}\n<b>Amount : </b>${App.notifyMsg?.amount}"
+                "<b>Stating Address :</b> ${App.notifyMsg?.sourceLoc}<b><br>Destination Address :</b> ${App.notifyMsg?.desLoc}<br><b>Amount : </b>${App.notifyMsg?.amount}"
             builder.setMessage(Html.fromHtml(message))
 
             builder.setPositiveButton("Accept", DialogInterface.OnClickListener { dialog, which ->
-
+                Log.e("ALL_RES","${App.getUserToken(this)}\n${App.notifyMsg?.bookingId!!}\n${App.getUserID(this)}")
+                VollyApi.updateBooking(this@DashboardActivity,App.notifyMsg?.bookingId!!)
             })
 
             builder.setNegativeButton("Cancel", DialogInterface.OnClickListener { dialog, i ->

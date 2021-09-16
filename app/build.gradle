@@ -48,6 +48,7 @@ dependencies {
     implementation 'de.hdodenhof:circleimageview:3.1.0' //circleimageview
     implementation 'com.github.bumptech.glide:glide:4.11.0' //glide
     implementation 'pub.devrel:easypermissions:3.0.0' //easy permission
+    implementation 'com.android.volley:volley:1.2.1' //volley
 
     //lifecycle components
     annotationProcessor "androidx.lifecycle:lifecycle-compiler:2.3.1"
