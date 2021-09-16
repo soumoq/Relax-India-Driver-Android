@@ -15,11 +15,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
 
-        if (App.notifyMsg.equals("")){
-
-        }else{
-            toast(App.notifyMsg)
-        }
 
         main_login.setOnClickListener {
             val intent = Intent(this, LoginActivity::class.java)

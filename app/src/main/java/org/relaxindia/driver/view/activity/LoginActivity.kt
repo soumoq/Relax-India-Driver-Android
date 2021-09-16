@@ -48,6 +48,7 @@ class LoginActivity : AppCompatActivity() {
     private fun observeViewModel() {
         apiCallViewModel.login.observe(this, Observer {
             if (!it.error) {
+                Log.e("USERTOKEN",it.data.access_token)
                 val sp = getSharedPreferences("user_info", MODE_PRIVATE)
                 val editor = sp.edit()
                 editor.putString(App.preferenceUserToken, it.data.access_token)

@@ -15,6 +15,7 @@ import androidx.core.app.NotificationCompat
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import org.relaxindia.driver.R
+import org.relaxindia.driver.model.NotificationDataModel
 import org.relaxindia.driver.util.App
 import org.relaxindia.driver.view.activity.MainActivity
 import java.util.*
@@ -28,7 +29,12 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         super.onMessageReceived(remoteMessage!!)
 
         val intent = Intent(this, MainActivity::class.java)
-        App.notifyMsg = remoteMessage.data["data_body"].toString()
+        App.notifyMsg = NotificationDataModel(
+            remoteMessage.data["booking_id"].toString(),
+            remoteMessage.data["source_loc"].toString(),
+            remoteMessage.data["des_loc"].toString(),
+            remoteMessage.data["amount"].toString()
+        )
 
         val notificationManager =
             getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager

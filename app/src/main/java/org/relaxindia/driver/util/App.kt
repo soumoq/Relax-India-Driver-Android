@@ -4,11 +4,14 @@ import android.content.Context
 import android.content.DialogInterface
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import org.relaxindia.driver.model.NotificationDataModel
 
 object App {
 
+    const val rs = "₹"
+
     //Notificatoin msg
-    var notifyMsg = ""
+    var notifyMsg : NotificationDataModel ?= null
 
     const val agree =
         "I certify that the information provided is true & correct and I also agree the </font>and <font color=#1b9ff1>Terms & Condition</font>"
@@ -22,6 +25,30 @@ object App {
 
     //Share preference key
     const val preferenceUserToken = "user_token"
+    const val preferenceUserPhone = "user_phone"
+    const val preferenceUserEmail = "user_email"
+    const val preferenceUserName = "user_name"
+    const val preferenceUserId = "user_id"
+
+    fun getUserID(context: Context): String {
+        val sp = context.getSharedPreferences("user_info", AppCompatActivity.MODE_PRIVATE)
+        return sp.getString(App.preferenceUserId, "")!!
+    }
+
+    fun getUserPhone(context: Context): String {
+        val sp = context.getSharedPreferences("user_info", AppCompatActivity.MODE_PRIVATE)
+        return sp.getString(App.preferenceUserPhone, "")!!
+    }
+
+    fun getUserEmail(context: Context): String {
+        val sp = context.getSharedPreferences("user_info", AppCompatActivity.MODE_PRIVATE)
+        return sp.getString(App.preferenceUserEmail, "")!!
+    }
+
+    fun getUserName(context: Context): String {
+        val sp = context.getSharedPreferences("user_info", AppCompatActivity.MODE_PRIVATE)
+        return sp.getString(App.preferenceUserName, "")!!
+    }
 
     fun getUserToken(context: Context): String {
         val sp = context.getSharedPreferences("user_info", AppCompatActivity.MODE_PRIVATE)
@@ -33,7 +60,6 @@ object App {
         builder.setTitle(title)
         builder.setMessage(message)
 
-        // add a button
         builder.setPositiveButton("OK", DialogInterface.OnClickListener { dialog, which ->
 
         })

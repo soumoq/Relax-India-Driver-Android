@@ -43,12 +43,11 @@ interface ApiCallService {
         password: String
     ): Call<UserToken>
 
-    @Headers("Content-Type: application/json")
-    @FormUrlEncoded
+
     @POST(App.profile)
     fun profile(
-        @Field("Authorization")
-        authorization: String,
+        @Header("Authorization")
+        authHeader: String,
     ): Call<ProfileRes>
 
 

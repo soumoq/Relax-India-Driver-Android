@@ -1,14 +1,19 @@
 package org.relaxindia.driver.view.activity
 
+import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Html
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import kotlinx.android.synthetic.main.activity_dashboard.*
+import kotlinx.android.synthetic.main.nav_header.view.*
 import org.relaxindia.driver.R
 import org.relaxindia.driver.util.App
 import org.relaxindia.driver.util.toast
@@ -29,7 +34,28 @@ class DashboardActivity : AppCompatActivity() {
         apiCallViewModel = ViewModelProvider(this).get(ApiCallViewModel::class.java)
         observeViewModel()
         Log.e("DRIVER_TOKEN", App.getUserToken(this))
-        apiCallViewModel.profileInfo(this,App.getUserToken(this))
+        apiCallViewModel.profileInfo(this)
+
+        if (App.notifyMsg != null) {
+            val builder = AlertDialog.Builder(this)
+            builder.setTitle("New Request from patent")
+            val message =
+                "<b>Stating Address :</b> ${App.notifyMsg?.sourceLoc}\n<b>Destination Address :</b> ${App.notifyMsg?.desLoc}\n<b>Amount : </b>${App.notifyMsg?.amount}"
+            builder.setMessage(Html.fromHtml(message))
+
+            builder.setPositiveButton("Accept", DialogInterface.OnClickListener { dialog, which ->
+
+            })
+
+            builder.setNegativeButton("Cancel", DialogInterface.OnClickListener { dialog, i ->
+
+            })
+
+            val dialog = builder.create()
+            dialog.setCanceledOnTouchOutside(false)
+            dialog.show()
+        }
+
 
         open_notification.setOnClickListener {
             startActivity(Intent(this, NotificationActivity::class.java))
@@ -74,17 +100,28 @@ class DashboardActivity : AppCompatActivity() {
         }
 
 
-
     }
 
     private fun observeViewModel() {
         apiCallViewModel.profileVar.observe(this, Observer {
+            if (!it.error) {
+                val sp = getSharedPreferences("user_info", Context.MODE_PRIVATE)
+                val editor = sp.edit()
+                editor.putString(App.preferenceUserId, it.data.id)
+                editor.putString(App.preferenceUserPhone, it.data.phone)
+                editor.putString(App.preferenceUserEmail, it.data.email)
+                editor.putString(App.preferenceUserName, it.data.name)
+                editor.commit()
 
+                navHeader.nav_username.text = it.data.name
+                navHeader.nav_phone.text = it.data.phone
+                navHeader.nav_image.text = it.data.name.take(1)
+            }
         })
     }
 
 
-        override fun startActivity(intent: Intent?) {
+    override fun startActivity(intent: Intent?) {
         super.startActivity(intent)
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
     }

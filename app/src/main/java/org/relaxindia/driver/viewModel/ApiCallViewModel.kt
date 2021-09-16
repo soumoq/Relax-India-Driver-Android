@@ -131,12 +131,11 @@ class ApiCallViewModel : ViewModel() {
         })
     }
 
-    fun profileInfo(context: Context, token:String) {
+    fun profileInfo(context: Context, token: String = App.getUserToken(context)) {
         progressDialog = ProgressDialog(context)
         progressDialog.setTitle("Please wait")
         progressDialog.setMessage("Please wait, fetching profile info")
         progressDialog.show()
-        Log.e("$LOG-profileInfo-if-token",token)
 
         val response: Call<ProfileRes> =
             restApiService.profile(token)
