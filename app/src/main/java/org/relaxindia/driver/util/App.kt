@@ -12,13 +12,15 @@ import com.android.volley.toolbox.Volley
 import org.json.JSONArray
 import org.json.JSONObject
 import org.relaxindia.driver.model.NotificationDataModel
+import org.relaxindia.driver.service.GpsTracker
 
 object App {
 
     const val rs = "₹"
 
     //Notificatoin msg receive
-    var notifyMsg : NotificationDataModel ?= null
+    var notifyMsg: NotificationDataModel? = null
+
     //Notificatoin msg send
     const val serverKey =
         "key=" + "AAAA1CWxbXI:APA91bGbT-na_V9dGiYNbIHUY7xj2g7GEJaZV3yCYoaqqIkVGzzutKBDWCjt5QeEAGF4tv5WaqcNB3KXrJ4rxGzXg8iMpdKAc5Q1pfHTWlNe4JV9JWRqndlw7FpE1tB-Dkn0tyEFuLLv"
@@ -36,6 +38,7 @@ object App {
     const val profile = "profile"
     const val UPDATE_BOOKING = "update-booking"
     const val UPDATE_DEVICE_TOKEN = "update-device-token"
+    const val GET_NOTIFICATION = "get-push-notifications"
 
 
     //Share preference key
@@ -84,12 +87,11 @@ object App {
     }
 
 
-
     fun sendNotification(
         context: Context,
-        array: ArrayList<String>,
-        notificationData: NotificationDataModel
+        array: ArrayList<String>
     ) {
+        val gpsTracker = GpsTracker(context)
 
         val requestQueue: RequestQueue by lazy {
             Volley.newRequestQueue(context)
@@ -97,17 +99,14 @@ object App {
 
         val notification = JSONObject()
         val notifcationBody = JSONObject()
-        notifcationBody.put("title", "New Request")
+        notifcationBody.put("title", "Request accepted")
         notifcationBody.put(
             "message",
-            "A new patient found. Please accept or reject to click hare."
+            "Driver accept your order. Driver os on the way."
         )
         // notification message
-        notifcationBody.put("booking_id", notificationData.bookingId)
-        notifcationBody.put("source_loc", notificationData.sourceLoc)
-        notifcationBody.put("des_loc", notificationData.desLoc)
-        notifcationBody.put("amount", notificationData.amount)
-        notifcationBody.put("device_id", notificationData.deviceId)
+        notifcationBody.put("booking_id", gpsTracker.latitude.toString())
+        notifcationBody.put("source_loc", gpsTracker.longitude.toString())
 
 
         notification.put("registration_ids", JSONArray(array))

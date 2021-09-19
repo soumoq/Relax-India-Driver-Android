@@ -1,13 +1,10 @@
 package org.relaxindia.driver.service.volly
 
+import android.app.ProgressDialog
 import android.content.Context
 
 import org.json.JSONException
 
-import androidx.core.content.ContextCompat.startActivity
-
-import android.content.Intent
-import androidx.core.content.ContextCompat
 import com.android.volley.*
 
 import org.json.JSONObject
@@ -15,18 +12,22 @@ import org.json.JSONObject
 import com.android.volley.toolbox.StringRequest
 
 import com.android.volley.toolbox.Volley
+import org.relaxindia.driver.NotificationApiModel
+import org.relaxindia.driver.service.GpsTracker
 import org.relaxindia.driver.util.App
 import org.relaxindia.driver.util.toast
 import org.relaxindia.driver.view.activity.DashboardActivity
+import org.relaxindia.driver.view.activity.NotificationActivity
 
 
 object VollyApi {
     //UserAppBaseUrl
     private const val BASE_URL_USER = "http://itmartsolution.com/demo/relaxindia.org/api/v1/user/"
-    private const val UPDATE_BOOKING = "update-booking"
+    private lateinit var progressDialog: ProgressDialog
 
-    fun updateBooking(context: Context, orderId: String, deviceId : String) {
-        val URL = "${App.apiBaseUrl}$UPDATE_BOOKING"
+
+    fun updateBooking(context: Context, orderId: String, deviceId: String) {
+        val URL = "${App.apiBaseUrl}${App.UPDATE_BOOKING}"
         val requestQueue = Volley.newRequestQueue(context)
         val stringRequest: StringRequest =
             object : StringRequest(Request.Method.PATCH, URL,
@@ -36,14 +37,27 @@ object VollyApi {
                         val error = jsonObj.getBoolean("error")
                         if (!error) {
                             App.notifyMsg = null
-                            App.openDialog(context, "Booking update successfully.", "")
+                            App.openDialog(
+                                context,
+                                "Booking update successfully.",
+                                "Thanks for accept the booking. We will let the patent know that you accept the booking."
+                            )
+                            val deviceIdArr = ArrayList<String>()
+                            deviceIdArr.add(deviceId)
+                            App.sendNotification(context, deviceIdArr)
+                        } else {
+                            App.openDialog(
+                                context,
+                                "Booking update failed.",
+                                "Someone already accept the booking."
+                            )
                         }
                     } catch (e: JSONException) {
                         App.openDialog(context, "Error", response)
                     }
                 },
                 Response.ErrorListener { error ->
-                    context.toast("Something went wrong: " + error)
+                    context.toast("Something went wrong: $error")
                 }) {
 
                 @Throws(AuthFailureError::class)
@@ -56,7 +70,11 @@ object VollyApi {
                 @Throws(AuthFailureError::class)
                 override fun getParams(): Map<String, String>? {
                     val params: MutableMap<String, String> = HashMap()
+                    val gpsTracker = GpsTracker(context)
                     params["booking_id"] = orderId
+                    params["driver_latitude"] = gpsTracker.latitude.toString()
+                    params["driver_longitude"] = gpsTracker.longitude.toString()
+
                     return params
                 }
             }
@@ -76,7 +94,6 @@ object VollyApi {
                         val jsonObj = JSONObject(response)
                         val error = jsonObj.getBoolean("error")
                         if (!error) {
-                            App.notifyMsg = null
                             //context.toast("Device token update successful")
                             if (deviceToken == "")
                                 (context as DashboardActivity).logout()
@@ -105,6 +122,67 @@ object VollyApi {
             }
         requestQueue.cache.clear()
         requestQueue.add(stringRequest)
+    }
+
+
+    //get push notification
+    fun getNotification(context: Context) {
+        progressDialog = ProgressDialog(context)
+        progressDialog.setTitle("Please wait")
+        progressDialog.setMessage("Please wait a while...")
+        progressDialog.show()
+
+        val URL = "${App.apiBaseUrl}${App.GET_NOTIFICATION}"
+        val requestQueue = Volley.newRequestQueue(context)
+        val stringRequest: StringRequest =
+            object : StringRequest(Request.Method.POST, URL,
+                Response.Listener<String?> { response ->
+                    try {
+                        progressDialog.dismiss()
+                        val jsonObj = JSONObject(response)
+                        val error = jsonObj.getBoolean("error")
+                        if (!error) {
+                            val notiList = ArrayList<NotificationApiModel>()
+                            val notiArr = jsonObj.getJSONArray("data")
+                            if (notiArr.length() > 0) {
+                                for (i in 0 until notiArr.length()) {
+                                    val obj = notiArr.getJSONObject(i)
+                                    notiList.add(
+                                        NotificationApiModel(
+                                            obj.getString("details"),
+                                            obj.getString("created_at")
+                                        )
+                                    )
+                                    (context as NotificationActivity).setNotiList(notiList)
+                                }
+
+                            }
+                        } else {
+                            App.openDialog(
+                                context,
+                                "Error",
+                                "Something went wrong"
+                            )
+                        }
+                    } catch (e: JSONException) {
+                        App.openDialog(context, "Error", response)
+                    }
+                },
+                Response.ErrorListener { error ->
+                    progressDialog.dismiss()
+                    context.toast("Something went wrong: $error")
+                }) {
+
+                @Throws(AuthFailureError::class)
+                override fun getHeaders(): MutableMap<String, String> {
+                    val header: MutableMap<String, String> = HashMap()
+                    header["Authorization"] = App.getUserToken(context)
+                    return header
+                }
+            }
+        requestQueue.cache.clear()
+        requestQueue.add(stringRequest)
+
     }
 
 }

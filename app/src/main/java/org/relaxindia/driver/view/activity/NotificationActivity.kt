@@ -4,7 +4,10 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import kotlinx.android.synthetic.main.activity_notifiaction.*
+import org.relaxindia.driver.NotificationApiModel
 import org.relaxindia.driver.R
+import org.relaxindia.driver.service.volly.VollyApi
+import org.relaxindia.driver.view.adapter.NotificationAdapter
 
 class NotificationActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -15,9 +18,8 @@ class NotificationActivity : AppCompatActivity() {
             onBackPressed()
         }
 
-        open_notification_details.setOnClickListener {
-            startActivity(Intent(this, NotificationDetailsActivity::class.java))
-        }
+
+        VollyApi.getNotification(this)
 
     }
 
@@ -29,6 +31,12 @@ class NotificationActivity : AppCompatActivity() {
     override fun onBackPressed() {
         super.onBackPressed()
         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
+    }
+
+    fun setNotiList(notiList: ArrayList<NotificationApiModel>) {
+        val notificationAdapter = NotificationAdapter(this)
+        notification_list.adapter = notificationAdapter
+        notificationAdapter.updateData(notiList)
     }
 
 }
