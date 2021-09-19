@@ -27,11 +27,17 @@ object VollyApi {
 
 
     fun updateBooking(context: Context, orderId: String, deviceId: String) {
+        progressDialog = ProgressDialog(context)
+        progressDialog.setTitle("Please wait")
+        progressDialog.setMessage("Please wait a while...")
+        progressDialog.show()
+
         val URL = "${App.apiBaseUrl}${App.UPDATE_BOOKING}"
         val requestQueue = Volley.newRequestQueue(context)
         val stringRequest: StringRequest =
             object : StringRequest(Request.Method.PATCH, URL,
                 Response.Listener<String?> { response ->
+                    progressDialog.dismiss()
                     try {
                         val jsonObj = JSONObject(response)
                         val error = jsonObj.getBoolean("error")
@@ -57,6 +63,7 @@ object VollyApi {
                     }
                 },
                 Response.ErrorListener { error ->
+                    progressDialog.dismiss()
                     context.toast("Something went wrong: $error")
                 }) {
 

@@ -7,6 +7,7 @@ import kotlinx.android.synthetic.main.activity_notifiaction.*
 import org.relaxindia.driver.NotificationApiModel
 import org.relaxindia.driver.R
 import org.relaxindia.driver.service.volly.VollyApi
+import org.relaxindia.driver.util.App
 import org.relaxindia.driver.view.adapter.NotificationAdapter
 
 class NotificationActivity : AppCompatActivity() {
@@ -37,6 +38,10 @@ class NotificationActivity : AppCompatActivity() {
         val notificationAdapter = NotificationAdapter(this)
         notification_list.adapter = notificationAdapter
         notificationAdapter.updateData(notiList)
+    }
+
+    fun bookOrder(bookingId: String) {
+        VollyApi.updateBooking(this, bookingId, "NA")
     }
 
 }

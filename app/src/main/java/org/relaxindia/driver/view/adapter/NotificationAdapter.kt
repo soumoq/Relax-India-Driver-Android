@@ -2,13 +2,16 @@ package org.relaxindia.driver.view.adapter
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.recycler_notification_list.view.*
+import org.json.JSONObject
 import org.relaxindia.driver.NotificationApiModel
 import org.relaxindia.driver.R
+import org.relaxindia.driver.view.activity.NotificationActivity
 
 
 class NotificationAdapter(context: Context) :
@@ -47,7 +50,14 @@ class NotificationAdapter(context: Context) :
         @SuppressLint("SetTextI18n")
         fun bind(notificationApiModel: NotificationApiModel) {
             view.recycler_notification_create.text = notificationApiModel.created_at
+            val obj = JSONObject(notificationApiModel.details)
+            Log.e("JSONOBJ", obj.toString())
+            view.noti_list_from.text = obj.getString("from_location")
+            view.noti_list_to.text = obj.getString("to_location")
 
+            view.noti_list_accept.setOnClickListener {
+                (view.context as NotificationActivity).bookOrder(obj.getString("id"))
+            }
         }
     }
 }

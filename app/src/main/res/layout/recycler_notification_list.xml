@@ -10,8 +10,8 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="15dp"
         android:layout_marginTop="10dp"
-        android:layout_marginBottom="5dp"
         android:layout_marginRight="15dp"
+        android:layout_marginBottom="5dp"
         android:elevation="3dp"
         app:cardBackgroundColor="@color/white"
         app:cardCornerRadius="5dp">
@@ -52,10 +52,11 @@
 
 
                     <TextView
+                        android:id="@+id/noti_list_from"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="15dp"
                         android:layout_gravity="center"
+                        android:layout_marginLeft="15dp"
                         android:text="My current location"
                         android:textColor="@color/black"
                         android:textSize="13sp" />
@@ -69,7 +70,7 @@
                     android:layout_marginLeft="45dp"
                     android:layout_marginTop="15dp"
                     android:layout_marginBottom="15dp"
-                    android:background="#dadada"/>
+                    android:background="#dadada" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -85,6 +86,7 @@
 
 
                     <TextView
+                        android:id="@+id/noti_list_to"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="15dp"
@@ -110,7 +112,7 @@
                 android:padding="15dp">
 
                 <RelativeLayout
-                    android:id="@+id/open_notification_details"
+                    android:id="@+id/noti_list_accept"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/text_box_green">
@@ -119,7 +121,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="8dp"
-                        android:text="available"
+                        android:text="Accept"
                         android:textAllCaps="true"
                         android:textColor="@color/white"
                         android:textSize="13sp" />
