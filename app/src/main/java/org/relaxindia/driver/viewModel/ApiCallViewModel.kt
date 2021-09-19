@@ -43,7 +43,7 @@ class ApiCallViewModel : ViewModel() {
         progressDialog.show()
 
         val response: Call<GlobalResponse> =
-            restApiService.updateProfile(name, email, phone, password, cPassword)
+            restApiService.updateProfile(name, email, phone, password, cPassword,"")
         response.enqueue(object : Callback<GlobalResponse> {
             override fun onResponse(
                 call: Call<GlobalResponse>,
@@ -100,7 +100,7 @@ class ApiCallViewModel : ViewModel() {
     fun loginInfo(context: Context, phone: String, password: String) {
         progressDialog = ProgressDialog(context)
         progressDialog.setTitle("Please wait")
-        progressDialog.setMessage("Please wait we verify your otp")
+        progressDialog.setMessage("Please wait we verify your username and password.")
         progressDialog.show()
 
         val response: Call<UserToken> =

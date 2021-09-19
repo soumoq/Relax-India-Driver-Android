@@ -12,6 +12,7 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.android.synthetic.main.activity_dashboard.*
 import kotlinx.android.synthetic.main.nav_header.view.*
 import org.relaxindia.driver.R
@@ -37,6 +38,12 @@ class DashboardActivity : AppCompatActivity() {
         Log.e("DRIVER_TOKEN", App.getUserToken(this))
         apiCallViewModel.profileInfo(this)
 
+        if (App.notifyMsg == null) {
+            FirebaseMessaging.getInstance().token.addOnSuccessListener {
+                VollyApi.updateDeviceToken(this, it)
+            }
+        }
+
         if (App.notifyMsg != null) {
             val builder = AlertDialog.Builder(this)
             builder.setTitle("New Request from patent")
@@ -45,8 +52,7 @@ class DashboardActivity : AppCompatActivity() {
             builder.setMessage(Html.fromHtml(message))
 
             builder.setPositiveButton("Accept", DialogInterface.OnClickListener { dialog, which ->
-                Log.e("ALL_RES","${App.getUserToken(this)}\n${App.notifyMsg?.bookingId!!}\n${App.getUserID(this)}")
-                VollyApi.updateBooking(this@DashboardActivity,App.notifyMsg?.bookingId!!)
+                VollyApi.updateBooking(this, App.notifyMsg?.bookingId!!,App.notifyMsg?.deviceId!!)
             })
 
             builder.setNegativeButton("Cancel", DialogInterface.OnClickListener { dialog, i ->
@@ -91,17 +97,23 @@ class DashboardActivity : AppCompatActivity() {
         }
 
         dashboard_logout.setOnClickListener {
-            val sp = applicationContext.getSharedPreferences("user_info", MODE_PRIVATE)
-            val editor = sp.edit()
-            editor.clear()
-            editor.apply()
+            VollyApi.updateDeviceToken(this, "")
 
-            val intent = Intent(this, LoginActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            startActivity(intent)
+
         }
 
 
+    }
+
+    fun logout() {
+        val sp = applicationContext.getSharedPreferences("user_info", MODE_PRIVATE)
+        val editor = sp.edit()
+        editor.clear()
+        editor.apply()
+
+        val intent = Intent(this, LoginActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(intent)
     }
 
     private fun observeViewModel() {

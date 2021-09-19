@@ -33,7 +33,8 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             remoteMessage.data["booking_id"].toString(),
             remoteMessage.data["source_loc"].toString(),
             remoteMessage.data["des_loc"].toString(),
-            remoteMessage.data["amount"].toString()
+            remoteMessage.data["amount"].toString(),
+            remoteMessage.data["device_id"].toString(),
         )
 
         val notificationManager =

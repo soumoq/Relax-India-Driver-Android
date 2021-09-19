@@ -23,6 +23,8 @@ interface ApiCallService {
         password: String,
         @Field("password_confirmation")
         password_confirmation: String,
+        @Field("device_token")
+        device_token: String,
     ): Call<GlobalResponse>
 
     @FormUrlEncoded
