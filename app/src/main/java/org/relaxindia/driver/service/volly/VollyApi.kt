@@ -36,7 +36,7 @@ object VollyApi {
                         val error = jsonObj.getBoolean("error")
                         if (!error) {
                             App.notifyMsg = null
-                            App.openDialog(context, "Booking update successfully. $deviceId", "")
+                            App.openDialog(context, "Booking update successfully.", "")
                         }
                     } catch (e: JSONException) {
                         App.openDialog(context, "Error", response)
