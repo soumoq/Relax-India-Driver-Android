@@ -130,6 +130,7 @@
 
 
                 <ImageView
+                    android:id="@+id/locate_googlemap"
                     android:layout_width="18dp"
                     android:layout_height="18dp"
                     android:layout_alignParentRight="true"

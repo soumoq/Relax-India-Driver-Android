@@ -11,7 +11,13 @@ import kotlinx.android.synthetic.main.recycler_notification_list.view.*
 import org.json.JSONObject
 import org.relaxindia.driver.NotificationApiModel
 import org.relaxindia.driver.R
+import org.relaxindia.driver.util.toast
 import org.relaxindia.driver.view.activity.NotificationActivity
+import androidx.core.content.ContextCompat.startActivity
+
+import android.content.Intent
+import android.net.Uri
+import androidx.core.content.ContextCompat
 
 
 class NotificationAdapter(context: Context) :
@@ -54,6 +60,17 @@ class NotificationAdapter(context: Context) :
             Log.e("JSONOBJ", obj.toString())
             view.noti_list_from.text = obj.getString("from_location")
             view.noti_list_to.text = obj.getString("to_location")
+
+            view.locate_googlemap.setOnClickListener {
+                val strUri =
+                    "http://maps.google.com/maps?q=loc:" + obj.getString("user_latitude") + "," + obj.getString("user_longitude") + " (" + "Label which you want" + ")"
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(strUri))
+                intent.setClassName(
+                    "com.google.android.apps.maps",
+                    "com.google.android.maps.MapsActivity"
+                )
+                view.context.startActivity(intent)
+            }
 
             view.noti_list_accept.setOnClickListener {
                 (view.context as NotificationActivity).bookOrder(obj.getString("id"))
