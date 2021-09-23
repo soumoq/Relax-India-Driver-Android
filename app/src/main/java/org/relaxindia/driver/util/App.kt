@@ -35,7 +35,7 @@ object App {
     const val apiLogin = "login"
     const val register = "register"
     const val verifyOtp = "verify-otp"
-    const val profile = "profile"
+    const val PROFILE = "profile"
     const val UPDATE_BOOKING = "update-booking"
     const val UPDATE_DEVICE_TOKEN = "update-device-token"
     const val GET_NOTIFICATION = "get-push-notifications"

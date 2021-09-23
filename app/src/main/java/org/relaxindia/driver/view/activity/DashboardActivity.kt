@@ -87,7 +87,7 @@ class DashboardActivity : AppCompatActivity() {
 
                 }
                 R.id.menu_profile -> {
-                    startActivity(Intent(this, RegisterActivity::class.java))
+                    startActivity(Intent(this, ProfileActivity::class.java))
                 }
                 R.id.menu_notification -> {
                     startActivity(Intent(this, NotificationActivity::class.java))

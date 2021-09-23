@@ -46,7 +46,7 @@ interface ApiCallService {
     ): Call<UserToken>
 
 
-    @POST(App.profile)
+    @POST(App.PROFILE)
     fun profile(
         @Header("Authorization")
         authHeader: String,

@@ -16,6 +16,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.RelaxIndiaDriver"
         android:usesCleartextTraffic="true">
+        <activity
+            android:name=".view.activity.ProfileActivity"
+            android:exported="true" />
 
         <service
             android:name=".service.MyFirebaseMessagingService"

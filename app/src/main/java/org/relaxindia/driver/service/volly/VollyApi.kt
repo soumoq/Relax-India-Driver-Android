@@ -18,6 +18,7 @@ import org.relaxindia.driver.util.App
 import org.relaxindia.driver.util.toast
 import org.relaxindia.driver.view.activity.DashboardActivity
 import org.relaxindia.driver.view.activity.NotificationActivity
+import org.relaxindia.driver.view.activity.ProfileActivity
 
 
 object VollyApi {
@@ -191,5 +192,63 @@ object VollyApi {
         requestQueue.add(stringRequest)
 
     }
+
+    //get push notification
+    fun updateProfile(context: Context, name: String, email: String, phone: String) {
+        progressDialog = ProgressDialog(context)
+        progressDialog.setTitle("Please wait")
+        progressDialog.setMessage("Please wait a while...")
+        progressDialog.show()
+
+        val URL = "${App.apiBaseUrl}${App.PROFILE}"
+        val requestQueue = Volley.newRequestQueue(context)
+        val stringRequest: StringRequest =
+            object : StringRequest(Request.Method.PATCH, URL,
+                Response.Listener<String?> { response ->
+                    try {
+                        progressDialog.dismiss()
+                        val jsonObj = JSONObject(response)
+                        val error = jsonObj.getBoolean("error")
+                        if (!error) {
+                            context.toast("Profile Updated")
+                            (context as ProfileActivity).profileUpdated()
+                        } else {
+                            App.openDialog(
+                                context,
+                                "Error",
+                                jsonObj.getString("message")
+                            )
+                        }
+                    } catch (e: JSONException) {
+                        App.openDialog(context, "Error", response)
+                    }
+                },
+                Response.ErrorListener { error ->
+                    progressDialog.dismiss()
+                    context.toast("Something went wrong: $error")
+                }) {
+
+                @Throws(AuthFailureError::class)
+                override fun getHeaders(): MutableMap<String, String> {
+                    val header: MutableMap<String, String> = HashMap()
+                    header["Authorization"] = App.getUserToken(context)
+                    return header
+                }
+
+                @Throws(AuthFailureError::class)
+                override fun getParams(): Map<String, String>? {
+                    val params: MutableMap<String, String> = HashMap()
+                    params["name"] = name
+                    params["email"] = email
+                    params["phone"] = phone
+
+                    return params
+                }
+            }
+        requestQueue.cache.clear()
+        requestQueue.add(stringRequest)
+
+    }
+
 
 }
