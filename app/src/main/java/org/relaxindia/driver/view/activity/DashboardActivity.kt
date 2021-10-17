@@ -12,10 +12,13 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.android.synthetic.main.activity_dashboard.*
 import kotlinx.android.synthetic.main.nav_header.view.*
 import org.relaxindia.driver.R
+import org.relaxindia.driver.service.GpsTracker
 import org.relaxindia.driver.service.volly.VollyApi
 import org.relaxindia.driver.util.App
 import org.relaxindia.driver.util.toast
@@ -24,19 +27,16 @@ import org.relaxindia.driver.viewModel.ApiCallViewModel
 class DashboardActivity : AppCompatActivity() {
 
     //nav-header
-    lateinit var navHeader: View
+    private lateinit var navHeader: View
 
-    lateinit var apiCallViewModel: ApiCallViewModel
+    private lateinit var apiCallViewModel: ApiCallViewModel
+
+    private lateinit var database: DatabaseReference
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_dashboard)
-
-        apiCallViewModel = ViewModelProvider(this).get(ApiCallViewModel::class.java)
-        observeViewModel()
-        Log.e("DRIVER_TOKEN", App.getUserToken(this))
-        apiCallViewModel.profileInfo(this)
 
         if (App.notifyMsg == null) {
             FirebaseMessaging.getInstance().token.addOnSuccessListener {
@@ -52,7 +52,7 @@ class DashboardActivity : AppCompatActivity() {
             builder.setMessage(Html.fromHtml(message))
 
             builder.setPositiveButton("Accept", DialogInterface.OnClickListener { dialog, which ->
-                VollyApi.updateBooking(this, App.notifyMsg?.bookingId!!,App.notifyMsg?.deviceId!!)
+                VollyApi.updateBooking(this, App.notifyMsg?.bookingId!!, App.notifyMsg?.deviceId!!)
             })
 
             builder.setNegativeButton("Cancel", DialogInterface.OnClickListener { dialog, i ->
@@ -105,13 +105,21 @@ class DashboardActivity : AppCompatActivity() {
 
     }
 
+    override fun onResume() {
+        super.onResume()
+        apiCallViewModel = ViewModelProvider(this).get(ApiCallViewModel::class.java)
+        observeViewModel()
+        Log.e("DRIVER_TOKEN", App.getUserToken(this))
+        apiCallViewModel.profileInfo(this)
+    }
+
     fun logout() {
         val sp = applicationContext.getSharedPreferences("user_info", MODE_PRIVATE)
         val editor = sp.edit()
         editor.clear()
         editor.apply()
 
-        val intent = Intent(this, LoginActivity::class.java)
+        val intent = Intent(this, MainActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(intent)
     }
@@ -130,6 +138,18 @@ class DashboardActivity : AppCompatActivity() {
                 navHeader.nav_username.text = it.data.name
                 navHeader.nav_phone.text = it.data.phone
                 navHeader.nav_image.text = it.data.name.take(1)
+
+                //Update data into firebase
+                val gpsTracker = GpsTracker(this)
+                val updateInfo = HashMap<String, Any>()
+                updateInfo["name"] = it.data.name
+                updateInfo["lat"] = gpsTracker.latitude.toString()
+                updateInfo["lon"] = gpsTracker.longitude.toString()
+                updateInfo["phone"] = it.data.phone
+                database = FirebaseDatabase.getInstance().reference.child("driver_data")
+                database.child(App.getUserID(this)).updateChildren(updateInfo)
+
+
             }
         })
     }

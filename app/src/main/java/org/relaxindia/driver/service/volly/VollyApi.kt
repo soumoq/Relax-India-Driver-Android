@@ -241,6 +241,7 @@ object VollyApi {
                     params["name"] = name
                     params["email"] = email
                     params["phone"] = phone
+                    params["address"] = "Test"
 
                     return params
                 }
