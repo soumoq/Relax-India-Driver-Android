@@ -19,6 +19,7 @@ import kotlinx.android.synthetic.main.activity_dashboard.*
 import kotlinx.android.synthetic.main.nav_header.view.*
 import org.relaxindia.driver.R
 import org.relaxindia.driver.service.GpsTracker
+import org.relaxindia.driver.service.updateLocation.LocUpdateService
 import org.relaxindia.driver.service.volly.VollyApi
 import org.relaxindia.driver.util.App
 import org.relaxindia.driver.util.toast
@@ -37,6 +38,8 @@ class DashboardActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_dashboard)
+
+        startService(Intent(this, LocUpdateService::class.java))
 
         if (App.notifyMsg == null) {
             FirebaseMessaging.getInstance().token.addOnSuccessListener {

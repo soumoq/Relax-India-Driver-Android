@@ -61,6 +61,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <service
+            android:name=".service.updateLocation.LocUpdateService"
+            android:exported="false"/>
+
     </application>
 
 </manifest>

@@ -2,6 +2,9 @@ package org.relaxindia.driver.util
 
 import android.content.Context
 import android.content.DialogInterface
+import android.os.Build
+import android.provider.Settings
+import android.text.TextUtils
 import android.util.Log
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -85,6 +88,27 @@ object App {
         val dialog = builder.create()
         dialog.show()
     }
+
+    fun isLocationEnabled(context: Context): Boolean {
+        var locationMode = 0
+        val locationProviders: String
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            locationMode = try {
+                Settings.Secure.getInt(context.getContentResolver(), Settings.Secure.LOCATION_MODE)
+            } catch (e: Settings.SettingNotFoundException) {
+                e.printStackTrace()
+                return false
+            }
+            locationMode != Settings.Secure.LOCATION_MODE_OFF
+        } else {
+            locationProviders = Settings.Secure.getString(
+                context.getContentResolver(),
+                Settings.Secure.LOCATION_PROVIDERS_ALLOWED
+            )
+            !TextUtils.isEmpty(locationProviders)
+        }
+    }
+
 
 
     fun sendNotification(
