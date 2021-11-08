@@ -75,6 +75,11 @@ class NotificationAdapter(context: Context) :
             view.noti_list_accept.setOnClickListener {
                 (view.context as NotificationActivity).bookOrder(obj.getString("id"))
             }
+
+            view.noti_list_reject.setOnClickListener {
+                (view.context as NotificationActivity).rejectBooking(obj.getString("id"))
+
+            }
         }
     }
 }

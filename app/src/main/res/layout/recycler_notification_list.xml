@@ -111,22 +111,47 @@
                 android:layout_height="wrap_content"
                 android:padding="15dp">
 
-                <RelativeLayout
-                    android:id="@+id/noti_list_accept"
+                <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/text_box_green">
+                    android:layout_height="wrap_content">
 
-                    <TextView
+                    <RelativeLayout
+                        android:id="@+id/noti_list_accept"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:padding="8dp"
-                        android:text="Accept"
-                        android:textAllCaps="true"
-                        android:textColor="@color/white"
-                        android:textSize="13sp" />
+                        android:background="@drawable/text_box_green">
 
-                </RelativeLayout>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="8dp"
+                            android:text="Accept"
+                            android:textAllCaps="true"
+                            android:textColor="@color/white"
+                            android:textSize="13sp" />
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/noti_list_reject"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:background="@drawable/text_box_red">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="8dp"
+                            android:text="REJECT"
+                            android:textAllCaps="true"
+                            android:textColor="@color/white"
+                            android:textSize="13sp" />
+
+                    </RelativeLayout>
+
+
+                </LinearLayout>
 
 
                 <ImageView

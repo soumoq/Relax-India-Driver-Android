@@ -47,6 +47,9 @@ class DashboardActivity : AppCompatActivity() {
             }
         }
 
+        Log.e("BAR_TOKEN",App.getUserToken(this))
+
+
         if (App.notifyMsg != null) {
             val builder = AlertDialog.Builder(this)
             builder.setTitle("New Request from patent")

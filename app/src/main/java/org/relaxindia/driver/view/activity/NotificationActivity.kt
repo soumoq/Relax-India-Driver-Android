@@ -8,6 +8,7 @@ import org.relaxindia.driver.NotificationApiModel
 import org.relaxindia.driver.R
 import org.relaxindia.driver.service.volly.VollyApi
 import org.relaxindia.driver.util.App
+import org.relaxindia.driver.util.toast
 import org.relaxindia.driver.view.adapter.NotificationAdapter
 
 class NotificationActivity : AppCompatActivity() {
@@ -20,7 +21,7 @@ class NotificationActivity : AppCompatActivity() {
         }
 
 
-        VollyApi.getNotification(this)
+        VollyApi.getNotification(this,"pending_notifications")
 
     }
 
@@ -42,6 +43,15 @@ class NotificationActivity : AppCompatActivity() {
 
     fun bookOrder(bookingId: String) {
         VollyApi.updateBooking(this, bookingId, "NA")
+    }
+
+    fun rejectReq(bookingId: String){
+
+    }
+
+    fun rejectBooking(id: String) {
+        toast(id)
+        VollyApi.rejectBooking(this,id)
     }
 
 }

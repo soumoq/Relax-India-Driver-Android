@@ -90,6 +90,66 @@ object VollyApi {
         requestQueue.add(stringRequest)
     }
 
+    fun rejectBooking(context: Context, orderId: String) {
+        progressDialog = ProgressDialog(context)
+        progressDialog.setTitle("Please wait")
+        progressDialog.setMessage("Please wait a while...")
+        progressDialog.show()
+
+        val URL = "${App.apiBaseUrl}${App.REJECT_BOOKING}"
+        val requestQueue = Volley.newRequestQueue(context)
+        val stringRequest: StringRequest =
+            object : StringRequest(Request.Method.PATCH, URL,
+                Response.Listener<String?> { response ->
+                    progressDialog.dismiss()
+                    try {
+                        val jsonObj = JSONObject(response)
+                        val error = jsonObj.getBoolean("error")
+                        if (!error) {
+                            App.notifyMsg = null
+                            App.openDialog(
+                                context,
+                                "Cancellation successfully.",
+                                "Thanks for accept the booking. We will let the patent know that you accept the booking."
+                            )
+                        } else {
+                            App.openDialog(
+                                context,
+                                "Cancellation failed.",
+                                "Someone already accept the booking."
+                            )
+                        }
+                    } catch (e: JSONException) {
+                        App.openDialog(context, "Error", response)
+                    }
+                },
+                Response.ErrorListener { error ->
+                    progressDialog.dismiss()
+                    context.toast("Something went wrong: $error")
+                }) {
+
+                @Throws(AuthFailureError::class)
+                override fun getHeaders(): MutableMap<String, String> {
+                    val header: MutableMap<String, String> = HashMap()
+                    header["Authorization"] = App.getUserToken(context)
+                    header["Content-Type"] = "application/json"
+                    header["Accept"] = "application/json"
+                    return header
+                }
+
+                @Throws(AuthFailureError::class)
+                override fun getParams(): Map<String, String>? {
+                    val params: MutableMap<String, String> = HashMap()
+                    params["booking_id"] = orderId
+
+                    return params
+                }
+            }
+        requestQueue.cache.clear()
+        requestQueue.add(stringRequest)
+    }
+
+
     //Update device token
     fun updateDeviceToken(context: Context, deviceToken: String) {
 
@@ -134,7 +194,7 @@ object VollyApi {
 
 
     //get push notification
-    fun getNotification(context: Context) {
+    fun getNotification(context: Context, status : String) {
         progressDialog = ProgressDialog(context)
         progressDialog.setTitle("Please wait")
         progressDialog.setMessage("Please wait a while...")
@@ -151,7 +211,8 @@ object VollyApi {
                         val error = jsonObj.getBoolean("error")
                         if (!error) {
                             val notiList = ArrayList<NotificationApiModel>()
-                            val notiArr = jsonObj.getJSONArray("data")
+                            val notiData = jsonObj.getJSONObject("data")
+                            val notiArr = notiData.getJSONArray(status)
                             if (notiArr.length() > 0) {
                                 for (i in 0 until notiArr.length()) {
                                     val obj = notiArr.getJSONObject(i)
@@ -173,7 +234,7 @@ object VollyApi {
                             )
                         }
                     } catch (e: JSONException) {
-                        App.openDialog(context, "Error", response)
+                        App.openDialog(context, "No Data Found...", e.message!!)
                     }
                 },
                 Response.ErrorListener { error ->

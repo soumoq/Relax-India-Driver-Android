@@ -42,6 +42,8 @@ object App {
     const val UPDATE_BOOKING = "update-booking"
     const val UPDATE_DEVICE_TOKEN = "update-device-token"
     const val GET_NOTIFICATION = "get-push-notifications"
+    const val REJECT_BOOKING: String = "reject-request"
+
 
 
     //Share preference key
