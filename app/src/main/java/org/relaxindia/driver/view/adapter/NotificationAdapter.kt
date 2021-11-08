@@ -11,18 +11,16 @@ import kotlinx.android.synthetic.main.recycler_notification_list.view.*
 import org.json.JSONObject
 import org.relaxindia.driver.NotificationApiModel
 import org.relaxindia.driver.R
-import org.relaxindia.driver.util.toast
 import org.relaxindia.driver.view.activity.NotificationActivity
-import androidx.core.content.ContextCompat.startActivity
 
 import android.content.Intent
 import android.net.Uri
-import androidx.core.content.ContextCompat
 
 
-class NotificationAdapter(context: Context) :
+class NotificationAdapter(context: Context, isDashboard: Boolean = false) :
     RecyclerView.Adapter<NotificationAdapter.ViewHolder>() {
     val context = context
+    val isDashboard = isDashboard
 
     private var notiData: ArrayList<NotificationApiModel> = ArrayList()
 
@@ -46,7 +44,7 @@ class NotificationAdapter(context: Context) :
     )
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(notiData[position])
+        holder.bind(notiData[position], isDashboard)
     }
 
     override fun getItemCount() = notiData.size
@@ -54,16 +52,24 @@ class NotificationAdapter(context: Context) :
     class ViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
 
         @SuppressLint("SetTextI18n")
-        fun bind(notificationApiModel: NotificationApiModel) {
+        fun bind(notificationApiModel: NotificationApiModel, isDashboard: Boolean) {
             view.recycler_notification_create.text = notificationApiModel.created_at
             val obj = JSONObject(notificationApiModel.details)
             Log.e("JSONOBJ", obj.toString())
             view.noti_list_from.text = obj.getString("from_location")
             view.noti_list_to.text = obj.getString("to_location")
 
+            if (isDashboard) {
+                view.noti_action.visibility = View.GONE
+            } else {
+                view.noti_action.visibility = View.VISIBLE
+            }
+
             view.locate_googlemap.setOnClickListener {
                 val strUri =
-                    "http://maps.google.com/maps?q=loc:" + obj.getString("user_latitude") + "," + obj.getString("user_longitude") + " (" + "Label which you want" + ")"
+                    "http://maps.google.com/maps?q=loc:" + obj.getString("user_latitude") + "," + obj.getString(
+                        "user_longitude"
+                    ) + " (" + "Label which you want" + ")"
                 val intent = Intent(Intent.ACTION_VIEW, Uri.parse(strUri))
                 intent.setClassName(
                     "com.google.android.apps.maps",
@@ -78,7 +84,6 @@ class NotificationAdapter(context: Context) :
 
             view.noti_list_reject.setOnClickListener {
                 (view.context as NotificationActivity).rejectBooking(obj.getString("id"))
-
             }
         }
     }

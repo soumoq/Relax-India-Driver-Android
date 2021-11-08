@@ -21,7 +21,7 @@ class NotificationActivity : AppCompatActivity() {
         }
 
 
-        VollyApi.getNotification(this,"pending_notifications")
+        VollyApi.getNotification(this,"pending_notifications","NotificationActivity")
 
     }
 
@@ -45,9 +45,6 @@ class NotificationActivity : AppCompatActivity() {
         VollyApi.updateBooking(this, bookingId, "NA")
     }
 
-    fun rejectReq(bookingId: String){
-
-    }
 
     fun rejectBooking(id: String) {
         toast(id)

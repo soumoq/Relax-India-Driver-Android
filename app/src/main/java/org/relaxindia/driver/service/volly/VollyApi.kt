@@ -194,7 +194,7 @@ object VollyApi {
 
 
     //get push notification
-    fun getNotification(context: Context, status : String) {
+    fun getNotification(context: Context, status: String, viewStatus: String) {
         progressDialog = ProgressDialog(context)
         progressDialog.setTitle("Please wait")
         progressDialog.setMessage("Please wait a while...")
@@ -222,7 +222,11 @@ object VollyApi {
                                             obj.getString("created_at")
                                         )
                                     )
-                                    (context as NotificationActivity).setNotiList(notiList)
+                                    if (viewStatus.equals("NotificationActivity")) {
+                                        (context as NotificationActivity).setNotiList(notiList)
+                                    } else {
+                                        (context as DashboardActivity).setNotiList(notiList)
+                                    }
                                 }
 
                             }

@@ -16,13 +16,16 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.android.synthetic.main.activity_dashboard.*
+import kotlinx.android.synthetic.main.activity_notifiaction.*
 import kotlinx.android.synthetic.main.nav_header.view.*
+import org.relaxindia.driver.NotificationApiModel
 import org.relaxindia.driver.R
 import org.relaxindia.driver.service.GpsTracker
 import org.relaxindia.driver.service.updateLocation.LocUpdateService
 import org.relaxindia.driver.service.volly.VollyApi
 import org.relaxindia.driver.util.App
 import org.relaxindia.driver.util.toast
+import org.relaxindia.driver.view.adapter.NotificationAdapter
 import org.relaxindia.driver.viewModel.ApiCallViewModel
 
 class DashboardActivity : AppCompatActivity() {
@@ -47,7 +50,10 @@ class DashboardActivity : AppCompatActivity() {
             }
         }
 
-        Log.e("BAR_TOKEN",App.getUserToken(this))
+        VollyApi.getNotification(this, "accepted_notifications", "DashboardActivity")
+
+
+        Log.e("BAR_TOKEN", App.getUserToken(this))
 
 
         if (App.notifyMsg != null) {
@@ -158,6 +164,12 @@ class DashboardActivity : AppCompatActivity() {
 
             }
         })
+    }
+
+    fun setNotiList(notiList: ArrayList<NotificationApiModel>) {
+        val notificationAdapter = NotificationAdapter(this,true)
+        dashboard_list.adapter = notificationAdapter
+        notificationAdapter.updateData(notiList)
     }
 
 
