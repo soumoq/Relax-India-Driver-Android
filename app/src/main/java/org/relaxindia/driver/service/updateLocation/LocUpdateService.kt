@@ -11,6 +11,7 @@ import com.google.firebase.database.FirebaseDatabase
 import org.relaxindia.driver.service.GpsTracker
 
 import android.widget.Toast
+import org.relaxindia.driver.util.App
 import org.relaxindia.driver.util.App.getUserID
 import java.lang.Exception
 import java.util.*
@@ -33,12 +34,20 @@ class LocUpdateService : Service() {
                     val updateInfo = HashMap<String, Any>()
                     updateInfo["lat"] = gpsTracker.latitude.toString()
                     updateInfo["lon"] = gpsTracker.longitude.toString()
+                    updateInfo["locationActive"] = App.isLocationEnabled(this@LocUpdateService)
                     val database = FirebaseDatabase.getInstance().reference.child("driver_data")
                     val userId: Int = getUserID(this@LocUpdateService).toInt()
                     if (userId >= 0) {
                         database.child(getUserID(this@LocUpdateService)).updateChildren(updateInfo)
+                            .addOnCompleteListener {
+                                if (it.isSuccessful) {
+                                    Log.e("LATLONAA", "${gpsTracker.latitude} S")
+                                } else {
+                                    Log.e("LATLONAA", "${gpsTracker.latitude} ${it.exception}")
+
+                                }
+                            }
                     }
-                    Log.e("LATLONAA", gpsTracker.latitude.toString())
                 } catch (e: Exception) {
                     Log.e("ERROR_SERVICE", e.message.toString())
                 }

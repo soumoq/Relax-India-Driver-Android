@@ -3,6 +3,7 @@ package org.relaxindia.driver.view.activity
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
+import android.content.IntentSender
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Html
@@ -12,6 +13,8 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.google.android.gms.common.api.GoogleApiClient
+import com.google.android.gms.location.*
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.messaging.FirebaseMessaging
@@ -37,12 +40,16 @@ class DashboardActivity : AppCompatActivity() {
 
     private lateinit var database: DatabaseReference
 
+    private var fusedLocationProviderClient: FusedLocationProviderClient? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_dashboard)
 
         startService(Intent(this, LocUpdateService::class.java))
+
+        toast(App.getUserID(this))
 
         if (App.notifyMsg == null) {
             FirebaseMessaging.getInstance().token.addOnSuccessListener {
@@ -123,6 +130,13 @@ class DashboardActivity : AppCompatActivity() {
         observeViewModel()
         Log.e("DRIVER_TOKEN", App.getUserToken(this))
         apiCallViewModel.profileInfo(this)
+
+        if (App.isLocationEnabled(this)) {
+
+
+        } else {
+            displayLocationSettingsRequest(this)
+        }
     }
 
     fun logout() {
@@ -167,9 +181,63 @@ class DashboardActivity : AppCompatActivity() {
     }
 
     fun setNotiList(notiList: ArrayList<NotificationApiModel>) {
-        val notificationAdapter = NotificationAdapter(this,true)
+        val notificationAdapter = NotificationAdapter(this, true)
         dashboard_list.adapter = notificationAdapter
         notificationAdapter.updateData(notiList)
+    }
+
+    private fun displayLocationSettingsRequest(context: Context) {
+        val googleApiClient = GoogleApiClient.Builder(context)
+            .addApi(LocationServices.API).build()
+        googleApiClient.connect()
+        val locationRequest = LocationRequest.create()
+        locationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+        locationRequest.interval = 10000
+        locationRequest.fastestInterval = (10000 / 2).toLong()
+        val builder = LocationSettingsRequest.Builder().addLocationRequest(locationRequest)
+        builder.setAlwaysShow(true)
+        val result =
+            LocationServices.SettingsApi.checkLocationSettings(googleApiClient, builder.build())
+        result.setResultCallback { result ->
+            val status = result.status
+            when (status.statusCode) {
+                LocationSettingsStatusCodes.SUCCESS -> {
+                    Log.i(
+                        "LOCATON_TAG",
+                        "All location settings are satisfied."
+                    )
+                }
+                LocationSettingsStatusCodes.RESOLUTION_REQUIRED -> {
+                    Log.i(
+                        "LOCATON_TAG",
+                        "Location settings are not satisfied. Show the user a dialog to upgrade location settings "
+                    )
+                    try {
+                        // Show the dialog by calling startResolutionForResult(), and check the result
+                        // in onActivityResult().
+                        status.startResolutionForResult(this, 1)
+                    } catch (e: IntentSender.SendIntentException) {
+                        Log.i("LOCATON_TAG", "PendingIntent unable to execute request.")
+                    }
+                }
+                LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE -> Log.i(
+                    "LOCATON_TAG",
+                    "Location settings are inadequate, and cannot be fixed here. Dialog not created."
+                )
+            }
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (App.isLocationEnabled(this)) {
+            fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
+
+
+        } else {
+            displayLocationSettingsRequest(this)
+        }
+
     }
 
 
