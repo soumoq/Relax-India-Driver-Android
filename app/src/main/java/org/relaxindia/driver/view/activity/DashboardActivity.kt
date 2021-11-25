@@ -19,7 +19,6 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.android.synthetic.main.activity_dashboard.*
-import kotlinx.android.synthetic.main.activity_notifiaction.*
 import kotlinx.android.synthetic.main.nav_header.view.*
 import org.relaxindia.driver.NotificationApiModel
 import org.relaxindia.driver.R
@@ -117,8 +116,29 @@ class DashboardActivity : AppCompatActivity() {
 
         dashboard_logout.setOnClickListener {
             VollyApi.updateDeviceToken(this, "")
+        }
 
+        //Check switch
+        val database = FirebaseDatabase.getInstance().reference.child("driver_data")
+        database.child(App.getUserID(this)).get().addOnSuccessListener {
+            if (it.exists()) {
+                toast(it.child("online").value.toString())
+                online_switch.isChecked = it.child("online").value.toString() == "true"
+            }
+        }
 
+        online_switch.setOnClickListener {
+            var checkSwitch = online_switch.isChecked
+            try {
+                val updateInfo = HashMap<String, Any>()
+                updateInfo["online"] = checkSwitch
+                val userId: Int = App.getUserID(this).toInt()
+                if (userId >= 0) {
+                    database.child(App.getUserID(this)).updateChildren(updateInfo)
+                }
+            } catch (e: Exception) {
+                toast(e.message.toString())
+            }
         }
 
 

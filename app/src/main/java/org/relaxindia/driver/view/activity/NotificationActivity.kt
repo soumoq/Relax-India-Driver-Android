@@ -7,7 +7,6 @@ import kotlinx.android.synthetic.main.activity_notifiaction.*
 import org.relaxindia.driver.NotificationApiModel
 import org.relaxindia.driver.R
 import org.relaxindia.driver.service.volly.VollyApi
-import org.relaxindia.driver.util.App
 import org.relaxindia.driver.util.toast
 import org.relaxindia.driver.view.adapter.NotificationAdapter
 

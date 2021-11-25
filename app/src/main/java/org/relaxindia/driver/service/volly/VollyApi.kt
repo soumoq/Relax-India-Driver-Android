@@ -2,6 +2,7 @@ package org.relaxindia.driver.service.volly
 
 import android.app.ProgressDialog
 import android.content.Context
+import android.content.Intent
 
 import org.json.JSONException
 
@@ -52,6 +53,11 @@ object VollyApi {
                             val deviceIdArr = ArrayList<String>()
                             deviceIdArr.add(deviceId)
                             App.sendNotification(context, deviceIdArr)
+
+                            val intent = Intent(context,DashboardActivity::class.java)
+                            intent.flags =
+                                Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                            context.startActivity(intent)
                         } else {
                             App.openDialog(
                                 context,

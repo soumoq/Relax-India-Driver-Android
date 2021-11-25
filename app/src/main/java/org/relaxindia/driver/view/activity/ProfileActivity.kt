@@ -1,19 +1,13 @@
 package org.relaxindia.driver.view.activity
 
-import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import kotlinx.android.synthetic.main.activity_profile.*
-import kotlinx.android.synthetic.main.nav_header.view.*
 import org.relaxindia.driver.R
 import org.relaxindia.driver.service.volly.VollyApi
 import org.relaxindia.driver.util.App
 import org.relaxindia.driver.util.toast
-import org.relaxindia.driver.viewModel.ApiCallViewModel
 
 class ProfileActivity : AppCompatActivity() {
 
