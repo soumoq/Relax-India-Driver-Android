@@ -43,6 +43,8 @@ object App {
     const val UPDATE_DEVICE_TOKEN = "update-device-token"
     const val GET_NOTIFICATION = "get-push-notifications"
     const val REJECT_BOOKING: String = "reject-request"
+    const val GET_UPLOAD_DOCUMENTS: String = "get-upload-documents"
+
 
 
 

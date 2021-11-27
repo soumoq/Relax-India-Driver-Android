@@ -110,6 +110,9 @@ class DashboardActivity : AppCompatActivity() {
                 R.id.menu_notification -> {
                     startActivity(Intent(this, NotificationActivity::class.java))
                 }
+                R.id.document_upload -> {
+                    startActivity(Intent(this, DocumentActivity::class.java))
+                }
             }
             true
         }
@@ -122,7 +125,7 @@ class DashboardActivity : AppCompatActivity() {
         val database = FirebaseDatabase.getInstance().reference.child("driver_data")
         database.child(App.getUserID(this)).get().addOnSuccessListener {
             if (it.exists()) {
-                toast(it.child("online").value.toString())
+                //toast(it.child("online").value.toString())
                 online_switch.isChecked = it.child("online").value.toString() == "true"
             }
         }

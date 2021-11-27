@@ -17,6 +17,8 @@
         <entry key="app/src/main/res/drawable/round_layout.xml" value="0.18518518518518517" />
         <entry key="app/src/main/res/drawable/text_box_red.xml" value="0.16666666666666666" />
         <entry key="app/src/main/res/layout/activity_dashboard.xml" value="0.22" />
+        <entry key="app/src/main/res/layout/activity_document.xml" value="0.15896739130434784" />
+        <entry key="app/src/main/res/layout/activity_document_upload.xml" value="0.15896739130434784" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.19322916666666667" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.178125" />
         <entry key="app/src/main/res/layout/activity_notifiaction.xml" value="0.22" />

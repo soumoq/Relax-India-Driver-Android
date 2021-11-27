@@ -14,10 +14,12 @@ import com.android.volley.toolbox.StringRequest
 
 import com.android.volley.toolbox.Volley
 import org.relaxindia.driver.NotificationApiModel
+import org.relaxindia.driver.model.GetDocument
 import org.relaxindia.driver.service.GpsTracker
 import org.relaxindia.driver.util.App
 import org.relaxindia.driver.util.toast
 import org.relaxindia.driver.view.activity.DashboardActivity
+import org.relaxindia.driver.view.activity.DocumentActivity
 import org.relaxindia.driver.view.activity.NotificationActivity
 import org.relaxindia.driver.view.activity.ProfileActivity
 
@@ -54,7 +56,7 @@ object VollyApi {
                             deviceIdArr.add(deviceId)
                             App.sendNotification(context, deviceIdArr)
 
-                            val intent = Intent(context,DashboardActivity::class.java)
+                            val intent = Intent(context, DashboardActivity::class.java)
                             intent.flags =
                                 Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                             context.startActivity(intent)
@@ -315,6 +317,60 @@ object VollyApi {
                     params["address"] = "Test"
 
                     return params
+                }
+            }
+        requestQueue.cache.clear()
+        requestQueue.add(stringRequest)
+
+    }
+
+
+    //get push notification
+    fun getUploadDocument(context: Context) {
+        progressDialog = ProgressDialog(context)
+        progressDialog.setTitle("Please wait")
+        progressDialog.setMessage("Please wait a while...")
+        progressDialog.show()
+
+        val URL = "${App.apiBaseUrl}${App.GET_UPLOAD_DOCUMENTS}"
+        val requestQueue = Volley.newRequestQueue(context)
+        val stringRequest: StringRequest =
+            object : StringRequest(Request.Method.POST, URL,
+                Response.Listener<String?> { response ->
+                    try {
+                        progressDialog.dismiss()
+                        val jsonObj = JSONObject(response)
+                        val error = jsonObj.getBoolean("error")
+                        if (!error) {
+                            val dataobj = jsonObj.getJSONObject("data")
+                            val getDocument = GetDocument(
+                                dataobj.getString("image"),
+                                dataobj.getString("driving_licence"),
+                                dataobj.getString("id_proof"),
+                                dataobj.getString("ambulance_paper"),
+                            )
+                            (context as DocumentActivity).getDocumentRes(getDocument)
+                        } else {
+                            App.openDialog(
+                                context,
+                                "Error",
+                                jsonObj.getString("message")
+                            )
+                        }
+                    } catch (e: JSONException) {
+                        App.openDialog(context, "Error", response)
+                    }
+                },
+                Response.ErrorListener { error ->
+                    progressDialog.dismiss()
+                    context.toast("Something went wrong: $error")
+                }) {
+
+                @Throws(AuthFailureError::class)
+                override fun getHeaders(): MutableMap<String, String> {
+                    val header: MutableMap<String, String> = HashMap()
+                    header["Authorization"] = App.getUserToken(context)
+                    return header
                 }
             }
         requestQueue.cache.clear()

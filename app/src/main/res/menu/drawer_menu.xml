@@ -21,6 +21,10 @@
             android:id="@+id/menu_profile"
             android:title="My Profile" />
 
+        <item
+            android:id="@+id/document_upload"
+            android:title="Document Upload" />
+
         <item android:title="Share App" />
 
         <item android:title="Support" />
