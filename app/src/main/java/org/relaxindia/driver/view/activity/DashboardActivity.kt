@@ -15,19 +15,23 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.location.*
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.android.synthetic.main.activity_dashboard.*
 import kotlinx.android.synthetic.main.nav_header.view.*
+import kotlinx.android.synthetic.main.sheet_booking_list.*
 import org.relaxindia.driver.NotificationApiModel
 import org.relaxindia.driver.R
+import org.relaxindia.driver.model.ScheduleBookingModel
 import org.relaxindia.driver.service.GpsTracker
 import org.relaxindia.driver.service.updateLocation.LocUpdateService
 import org.relaxindia.driver.service.volly.VollyApi
 import org.relaxindia.driver.util.App
 import org.relaxindia.driver.util.toast
 import org.relaxindia.driver.view.adapter.NotificationAdapter
+import org.relaxindia.driver.view.adapter.ScheduleBookingAdapter
 import org.relaxindia.driver.viewModel.ApiCallViewModel
 
 class DashboardActivity : AppCompatActivity() {
@@ -41,12 +45,21 @@ class DashboardActivity : AppCompatActivity() {
 
     private var fusedLocationProviderClient: FusedLocationProviderClient? = null
 
+    //Buttom Sheet
+    lateinit var bookingListSheet: BottomSheetDialog
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_dashboard)
 
         startService(Intent(this, LocUpdateService::class.java))
+
+        bookingListSheet = BottomSheetDialog(this, R.style.AppBottomSheetDialogTheme)
+        bookingListSheet.setContentView(R.layout.sheet_booking_list)
+        bookingListSheet.back_sheet_schedule.setOnClickListener {
+            bookingListSheet.dismiss()
+        }
 
         toast(App.getUserID(this))
 
@@ -112,6 +125,9 @@ class DashboardActivity : AppCompatActivity() {
                 }
                 R.id.document_upload -> {
                     startActivity(Intent(this, DocumentActivity::class.java))
+                }
+                R.id.schedule_booking_list -> {
+                    VollyApi.getScheduleBooking(this)
                 }
             }
             true
@@ -251,6 +267,13 @@ class DashboardActivity : AppCompatActivity() {
         }
     }
 
+    fun getScheduleBookingList(objList: java.util.ArrayList<ScheduleBookingModel>) {
+        bookingListSheet.show()
+        val successScheduleAdapter = ScheduleBookingAdapter(this)
+        bookingListSheet.schedule_booking_list.adapter = successScheduleAdapter
+        successScheduleAdapter.updateData(objList)
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (App.isLocationEnabled(this)) {
@@ -273,5 +296,6 @@ class DashboardActivity : AppCompatActivity() {
         super.onBackPressed()
         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
     }
+
 
 }

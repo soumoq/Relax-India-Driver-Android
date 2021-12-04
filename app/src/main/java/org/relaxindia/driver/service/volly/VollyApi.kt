@@ -15,6 +15,7 @@ import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import org.relaxindia.driver.NotificationApiModel
 import org.relaxindia.driver.model.GetDocument
+import org.relaxindia.driver.model.ScheduleBookingModel
 import org.relaxindia.driver.service.GpsTracker
 import org.relaxindia.driver.util.App
 import org.relaxindia.driver.util.toast
@@ -376,6 +377,68 @@ object VollyApi {
         requestQueue.cache.clear()
         requestQueue.add(stringRequest)
 
+    }
+
+    //get schedule booking
+    fun getScheduleBooking(context: Context) {
+        context.toast("Please wait...")
+        val URL = "${App.apiBaseUrl}${App.GET_SCHEDULE_BOOKING}"
+        val requestQueue = Volley.newRequestQueue(context)
+
+        val stringRequest: StringRequest =
+            object : StringRequest(
+                Request.Method.POST, URL,
+                Response.Listener<String?> { response ->
+                    try {
+                        val jsonObj = JSONObject(response)
+                        val error = jsonObj.getBoolean("error")
+                        if (error) {
+                            context.toast("Something went wrong!!!")
+                        } else {
+                            val jsonArr = jsonObj.getJSONArray("data")
+                            if (jsonArr.length() > 0) {
+                                val objList = ArrayList<ScheduleBookingModel>()
+                                for (i in 0 until jsonArr.length()) {
+                                    val obj = jsonArr.getJSONObject(i)
+                                    objList.add(
+                                        ScheduleBookingModel(
+                                            obj.getInt("user_id"),
+                                            obj.getString("user_name"),
+                                            obj.getString("user_phone"),
+                                            obj.getString("user_image"),
+                                            obj.getString("from_location"),
+                                            obj.getString("to_location"),
+                                            obj.getString("schedule_date_time"),
+                                            obj.getString("user_comment"),
+                                            obj.getDouble("booking_amount"),
+                                            obj.getDouble("total_amount"),
+                                            obj.getString("status"),
+                                            obj.getString("date"),
+                                        )
+                                    )
+                                }
+                                (context as DashboardActivity).getScheduleBookingList(objList)
+                            } else {
+                                context.toast("No Schedule booking List Found...")
+                            }
+                        }
+                    } catch (e: JSONException) {
+                        App.openDialog(context, "Error", e.message!!)
+                    }
+                },
+                Response.ErrorListener { error ->
+                    context.toast("Something went wrong: $error")
+                }) {
+
+                @Throws(AuthFailureError::class)
+                override fun getHeaders(): MutableMap<String, String> {
+                    val header: MutableMap<String, String> = HashMap()
+                    header["Authorization"] = App.getUserToken(context)
+                    return header
+                }
+            }
+        requestQueue.cache.clear()
+        requestQueue.add(stringRequest)
     }
 
 

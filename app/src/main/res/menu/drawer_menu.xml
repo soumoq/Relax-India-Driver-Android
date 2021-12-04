@@ -25,7 +25,9 @@
             android:id="@+id/document_upload"
             android:title="Document Upload" />
 
-        <item android:title="Share App" />
+        <item
+            android:id="@+id/schedule_booking_list"
+            android:title="Schedule Booking List" />
 
         <item android:title="Support" />
 

@@ -15,6 +15,7 @@
         <entry key="app/src/main/res/drawable/ic_baseline_keyboard_arrow_up_24.xml" value="0.18518518518518517" />
         <entry key="app/src/main/res/drawable/ic_round_arrow_back_24.xml" value="0.20615384615384616" />
         <entry key="app/src/main/res/drawable/round_layout.xml" value="0.18518518518518517" />
+        <entry key="app/src/main/res/drawable/rounded_dialog.xml" value="0.16574074074074074" />
         <entry key="app/src/main/res/drawable/text_box_red.xml" value="0.16666666666666666" />
         <entry key="app/src/main/res/layout/activity_dashboard.xml" value="0.22" />
         <entry key="app/src/main/res/layout/activity_document.xml" value="0.15896739130434784" />
@@ -30,6 +31,8 @@
         <entry key="app/src/main/res/layout/nav_header.xml" value="0.17074275362318841" />
         <entry key="app/src/main/res/layout/recycler_my_order_list.xml" value="0.1693840579710145" />
         <entry key="app/src/main/res/layout/recycler_notification_list.xml" value="0.18" />
+        <entry key="app/src/main/res/layout/schedule_booking_list.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/sheet_booking_list.xml" value="0.12907608695652173" />
         <entry key="app/src/main/res/layout/sheet_home_dashboard.xml" value="0.25" />
         <entry key="app/src/main/res/layout/sheet_notification_details.xml" value="0.2" />
         <entry key="app/src/main/res/menu/drawer_menu.xml" value="0.19322916666666667" />
