@@ -10,7 +10,6 @@ import android.provider.MediaStore
 import android.text.Html
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
-import kotlinx.android.synthetic.main.activity_login.terms_service
 import kotlinx.android.synthetic.main.activity_register.*
 import org.relaxindia.driver.R
 import org.relaxindia.driver.util.App
@@ -32,6 +31,11 @@ class RegisterActivity : AppCompatActivity() {
             onBackPressed()
         }
 
+        register_goto_login.setOnClickListener {
+            startActivity(Intent(this, LoginActivity::class.java))
+            finish()
+        }
+
         do_register.setOnClickListener {
             if (register_name.text!!.isNotEmpty() &&
                 register_mobile.text!!.isNotEmpty() &&
@@ -39,7 +43,7 @@ class RegisterActivity : AppCompatActivity() {
                 register_pass.text!!.isNotEmpty() &&
                 register_confirm_pass.text!!.isNotEmpty()
             ) {
-                if (register_pass.text.toString() == register_confirm_pass.text.toString() ) {
+                if (register_pass.text.toString() == register_confirm_pass.text.toString()) {
                     apiCallViewModel.registerInfo(
                         this,
                         register_name.text.toString(),

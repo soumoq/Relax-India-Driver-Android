@@ -113,13 +113,16 @@
                     app:button_text_color="@color/white" />
 
                 <TextView
-                    android:id="@+id/terms_service"
+                    android:id="@+id/login_goto_register"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:layout_marginLeft="15dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginRight="15dp"
-                    android:text="Terms of Services"
+                    android:gravity="center"
+                    android:text="Don't have an account?\nClick hare to register your account"
+                    android:textColor="@color/app_color"
                     android:textSize="13sp" />
 
 

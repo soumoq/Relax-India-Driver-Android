@@ -25,8 +25,13 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
+        login_goto_register.setOnClickListener {
+            startActivity(Intent(this, RegisterActivity::class.java))
+            finish()
+        }
+
         FirebaseMessaging.getInstance().token.addOnSuccessListener {
-            Log.e("FCM_TOKEN",it)
+            Log.e("FCM_TOKEN", it)
         }
 
         FirebaseMessaging.getInstance().subscribeToTopic("/topics/relaxIndia")
@@ -48,7 +53,7 @@ class LoginActivity : AppCompatActivity() {
     private fun observeViewModel() {
         apiCallViewModel.login.observe(this, Observer {
             if (!it.error) {
-                Log.e("USERTOKEN",it.data.access_token)
+                Log.e("USERTOKEN", it.data.access_token)
                 val sp = getSharedPreferences("user_info", MODE_PRIVATE)
                 val editor = sp.edit()
                 editor.putString(App.preferenceUserToken, it.data.access_token)
