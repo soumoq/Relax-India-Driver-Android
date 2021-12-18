@@ -61,7 +61,7 @@ class DashboardActivity : AppCompatActivity() {
             bookingListSheet.dismiss()
         }
 
-        toast(App.getUserID(this))
+        //toast(App.getUserID(this))
 
         if (App.notifyMsg == null) {
             FirebaseMessaging.getInstance().token.addOnSuccessListener {
@@ -83,6 +83,18 @@ class DashboardActivity : AppCompatActivity() {
             builder.setMessage(Html.fromHtml(message))
 
             builder.setPositiveButton("Accept", DialogInterface.OnClickListener { dialog, which ->
+                try {
+                    val database = FirebaseDatabase.getInstance().reference.child("driver_data")
+                    val updateInfo = HashMap<String, Any>()
+                    updateInfo["online"] = false
+                    val userId: Int = App.getUserID(this).toInt()
+                    if (userId >= 0) {
+                        database.child(App.getUserID(this)).updateChildren(updateInfo)
+                    }
+                } catch (e: java.lang.Exception) {
+                    toast(e.message.toString())
+                }
+
                 VollyApi.updateBooking(this, App.notifyMsg?.bookingId!!, App.notifyMsg?.deviceId!!)
             })
 
@@ -147,7 +159,7 @@ class DashboardActivity : AppCompatActivity() {
         }
 
         online_switch.setOnClickListener {
-            var checkSwitch = online_switch.isChecked
+            val checkSwitch = online_switch.isChecked
             try {
                 val updateInfo = HashMap<String, Any>()
                 updateInfo["online"] = checkSwitch
