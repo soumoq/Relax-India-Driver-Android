@@ -191,14 +191,34 @@ class DashboardActivity : AppCompatActivity() {
     }
 
     fun logout() {
-        val sp = applicationContext.getSharedPreferences("user_info", MODE_PRIVATE)
-        val editor = sp.edit()
-        editor.clear()
-        editor.apply()
 
-        val intent = Intent(this, MainActivity::class.java)
-        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-        startActivity(intent)
+        try {
+            val database = FirebaseDatabase.getInstance().reference.child("driver_data")
+            val updateInfo = HashMap<String, Any>()
+            updateInfo["online"] = false
+            val userId: Int = App.getUserID(this).toInt()
+            if (userId >= 0) {
+                database.child(App.getUserID(this)).updateChildren(updateInfo)
+                    .addOnSuccessListener {
+                        val sp = applicationContext.getSharedPreferences("user_info", MODE_PRIVATE)
+                        val editor = sp.edit()
+                        editor.clear()
+                        editor.apply()
+
+                        val intent = Intent(this, MainActivity::class.java)
+                        intent.flags =
+                            Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                        startActivity(intent)
+
+                    }.addOnFailureListener {
+                        toast("DB Update failed.")
+                    }
+            }
+        } catch (e: java.lang.Exception) {
+            toast(e.message.toString())
+        }
+
+
     }
 
     private fun observeViewModel() {

@@ -16,6 +16,10 @@ class ProfileActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile)
 
+        register_back.setOnClickListener {
+            onBackPressed()
+        }
+
         profile_name.setText(App.getUserName(this))
         profile_mobile.setText(App.getUserPhone(this))
         profile_email.setText(App.getUserEmail(this))
