@@ -11,7 +11,8 @@
 
         <item
             android:id="@+id/menu_your_journey"
-            android:title="Your Journey" />
+            android:title="Your Journey"
+            android:visible="false" />
 
         <item
             android:id="@+id/menu_notification"
@@ -23,13 +24,16 @@
 
         <item
             android:id="@+id/document_upload"
-            android:title="Document Upload" />
+            android:title="Document Upload"
+            android:visible="false" />
 
         <item
             android:id="@+id/schedule_booking_list"
             android:title="Schedule Booking List" />
 
-        <item android:title="Support" />
+        <item
+            android:title="Support"
+            android:visible="false" />
 
 
     </group>

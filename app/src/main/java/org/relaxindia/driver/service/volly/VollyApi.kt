@@ -14,6 +14,7 @@ import com.android.volley.toolbox.StringRequest
 
 import com.android.volley.toolbox.Volley
 import org.relaxindia.driver.NotificationApiModel
+import org.relaxindia.driver.model.GetDashboard
 import org.relaxindia.driver.model.GetDocument
 import org.relaxindia.driver.model.ScheduleBookingModel
 import org.relaxindia.driver.service.GpsTracker
@@ -441,5 +442,50 @@ object VollyApi {
         requestQueue.add(stringRequest)
     }
 
+    //get push notification
+    fun getDashBoardDetails(context: Context) {
+        val URL = "${App.apiBaseUrl}${App.DASHBOARD}"
+        val requestQueue = Volley.newRequestQueue(context)
+        val stringRequest: StringRequest =
+            object : StringRequest(Request.Method.POST, URL,
+                Response.Listener<String?> { response ->
+                    try {
+                        progressDialog.dismiss()
+                        val jsonObj = JSONObject(response)
+                        val error = jsonObj.getBoolean("error")
+                        if (!error) {
+                            val dataobj = jsonObj.getJSONObject("data")
+                            val getDashboard = GetDashboard(
+                                dataobj.getString("total_earning"),
+                                dataobj.getString("total_journey"),
+                                dataobj.getString("avg_rating"),
+                            )
+                            (context as DashboardActivity).getDashboardRes(getDashboard)
+                        } else {
+                            App.openDialog(
+                                context,
+                                "Error",
+                                jsonObj.getString("message")
+                            )
+                        }
+                    } catch (e: JSONException) {
+                        App.openDialog(context, "Error", response)
+                    }
+                },
+                Response.ErrorListener { error ->
+                    context.toast("Something went wrong: $error")
+                }) {
+
+                @Throws(AuthFailureError::class)
+                override fun getHeaders(): MutableMap<String, String> {
+                    val header: MutableMap<String, String> = HashMap()
+                    header["Authorization"] = App.getUserToken(context)
+                    return header
+                }
+            }
+        requestQueue.cache.clear()
+        requestQueue.add(stringRequest)
+
+    }
 
 }

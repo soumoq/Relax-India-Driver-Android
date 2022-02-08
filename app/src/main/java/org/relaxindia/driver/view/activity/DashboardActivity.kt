@@ -24,6 +24,7 @@ import kotlinx.android.synthetic.main.nav_header.view.*
 import kotlinx.android.synthetic.main.sheet_booking_list.*
 import org.relaxindia.driver.NotificationApiModel
 import org.relaxindia.driver.R
+import org.relaxindia.driver.model.GetDashboard
 import org.relaxindia.driver.model.ScheduleBookingModel
 import org.relaxindia.driver.service.GpsTracker
 import org.relaxindia.driver.service.updateLocation.LocUpdateService
@@ -62,6 +63,7 @@ class DashboardActivity : AppCompatActivity() {
         }
 
         //toast(App.getUserID(this))
+        VollyApi.getDashBoardDetails(this)
 
         if (App.notifyMsg == null) {
             FirebaseMessaging.getInstance().token.addOnSuccessListener {
@@ -219,6 +221,12 @@ class DashboardActivity : AppCompatActivity() {
         }
 
 
+    }
+
+    fun getDashboardRes(dashboard: GetDashboard) {
+        total_earning.text = dashboard.total_earning
+        total_journey.text = dashboard.total_journey
+        avg_rating.text = dashboard.avg_rating
     }
 
     private fun observeViewModel() {
