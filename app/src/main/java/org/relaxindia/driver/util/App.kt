@@ -45,6 +45,7 @@ object App {
     const val REJECT_BOOKING: String = "reject-request"
     const val GET_UPLOAD_DOCUMENTS: String = "get-upload-documents"
     const val GET_SCHEDULE_BOOKING : String = "get-schedule-bookings"
+    const val UPLOAD_DOCUMENT = "upload-documents"
 
 
 
