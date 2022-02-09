@@ -46,7 +46,7 @@ class DashboardActivity : AppCompatActivity() {
 
     private var fusedLocationProviderClient: FusedLocationProviderClient? = null
 
-    //Buttom Sheet
+    //Bottom Sheet
     lateinit var bookingListSheet: BottomSheetDialog
 
 

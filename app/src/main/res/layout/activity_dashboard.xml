@@ -68,23 +68,25 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="10dp"
-                    android:text="Total Earning"
-                    android:textColor="#000000"
-                    android:textSize="10sp" />
-
-                <TextView
                     android:id="@+id/total_earning"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="10dp"
                     android:text="0"
                     android:textColor="#000000"
                     android:textSize="17sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="10dp"
+                    android:text="Total Earning"
+                    android:textColor="#000000"
+                    android:textSize="10sp" />
+
+
             </LinearLayout>
 
 
@@ -98,23 +100,25 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="10dp"
-                    android:text="Total Journey"
-                    android:textColor="#000000"
-                    android:textSize="10sp" />
-
-                <TextView
                     android:id="@+id/total_journey"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="10dp"
                     android:text="0"
                     android:textColor="#000000"
                     android:textSize="17sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="10dp"
+                    android:text="Total Journey"
+                    android:textColor="#000000"
+                    android:textSize="10sp" />
+
+
             </LinearLayout>
 
 
@@ -127,23 +131,25 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="10dp"
-                    android:text="Average Rating"
-                    android:textColor="#000000"
-                    android:textSize="10sp" />
-
-                <TextView
                     android:id="@+id/avg_rating"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="10dp"
                     android:text="0"
                     android:textColor="#000000"
                     android:textSize="17sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="10dp"
+                    android:text="Average Rating"
+                    android:textColor="#000000"
+                    android:textSize="10sp" />
+
+
             </LinearLayout>
 
         </LinearLayout>
@@ -185,23 +191,36 @@
 
         </RelativeLayout>
 
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="10dp"
-            android:text="Accepted Notifications"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            android:textStyle="bold" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/dashboard_list"
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="10dp"
+                    android:text="Accepted Notifications"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/dashboard_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+
+            </LinearLayout>
+
+        </androidx.core.widget.NestedScrollView>
 
 
     </LinearLayout>
