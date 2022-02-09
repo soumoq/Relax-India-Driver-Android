@@ -3,6 +3,7 @@ package org.relaxindia.driver.view.activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.activity_notifiaction.*
 import org.relaxindia.driver.NotificationApiModel
@@ -63,6 +64,14 @@ class NotificationActivity : AppCompatActivity() {
     fun rejectBooking(id: String) {
         toast(id)
         VollyApi.rejectBooking(this, id)
+    }
+
+    fun setNotiView(status: Boolean) {
+        if (status) {
+            notification_layout.visibility = View.GONE
+        } else {
+            notification_layout.visibility = View.VISIBLE
+        }
     }
 
 }

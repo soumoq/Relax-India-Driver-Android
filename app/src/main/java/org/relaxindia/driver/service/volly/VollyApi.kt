@@ -238,6 +238,10 @@ object VollyApi {
                                         (context as DashboardActivity).setNotiList(notiList)
                                     }
                                 }
+                            } else {
+                                if (viewStatus.equals("NotificationActivity")) {
+                                    (context as NotificationActivity).setNotiView(false)
+                                }
 
                             }
                         } else {
