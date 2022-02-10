@@ -292,10 +292,17 @@ object VollyApi {
                             context.toast("Profile Updated")
                             (context as ProfileActivity).profileUpdated()
                         } else {
+                            val dataObj = jsonObj.getJSONObject("data")
+                            val errorObj = dataObj.getJSONObject("errors")
+                            val keys = errorObj.keys()
+                            val errorString = StringBuffer()
+                            keys.forEach {
+                                errorString.append(errorObj.getJSONArray(it)[0].toString() + "\n")
+                            }
                             App.openDialog(
                                 context,
                                 "Error",
-                                jsonObj.getString("message")
+                                errorString.toString()
                             )
                         }
                     } catch (e: JSONException) {

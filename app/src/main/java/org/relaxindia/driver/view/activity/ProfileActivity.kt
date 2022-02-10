@@ -26,18 +26,14 @@ class ProfileActivity : AppCompatActivity() {
 
 
         update_profile.setOnClickListener {
-            if (profile_name.text!!.isNotEmpty() &&
-                profile_mobile.text!!.isNotEmpty()
-            ) {
-                VollyApi.updateProfile(
-                    this,
-                    profile_name.text.toString(),
-                    profile_email.text.toString(),
-                    profile_mobile.text.toString()
-                )
-            } else {
-                toast("Invalid input...")
-            }
+
+            VollyApi.updateProfile(
+                this,
+                profile_name.text.toString(),
+                profile_email.text.toString(),
+                profile_mobile.text.toString()
+            )
+
         }
 
 
