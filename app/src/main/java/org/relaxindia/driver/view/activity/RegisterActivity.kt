@@ -12,6 +12,7 @@ import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import kotlinx.android.synthetic.main.activity_register.*
 import org.relaxindia.driver.R
+import org.relaxindia.driver.service.volly.VollyApi
 import org.relaxindia.driver.util.App
 import org.relaxindia.driver.viewModel.ApiCallViewModel
 import java.text.SimpleDateFormat
@@ -37,36 +38,45 @@ class RegisterActivity : AppCompatActivity() {
         }
 
         do_register.setOnClickListener {
-            if (register_name.text!!.isNotEmpty() &&
-                register_mobile.text!!.isNotEmpty() &&
-                register_email.text!!.isNotEmpty() &&
-                register_pass.text!!.isNotEmpty() &&
-                register_confirm_pass.text!!.isNotEmpty()
-            ) {
-                if (register_pass.text.toString() == register_confirm_pass.text.toString()) {
-                    apiCallViewModel.registerInfo(
-                        this,
-                        register_name.text.toString(),
-                        register_email.text.toString(),
-                        register_mobile.text.toString(),
-                        register_pass.text.toString(),
-                        register_confirm_pass.text.toString()
-                    )
-                    observeViewModel()
-                } else {
-                    App.openDialog(
-                        this,
-                        "Error",
-                        "Password mismatch or password must be grater then 7 "
-                    )
-                }
-            } else {
-                App.openDialog(
-                    this,
-                    "Error",
-                    "Field not be blank"
-                )
-            }
+            VollyApi.registerDriver(
+                this,
+                register_name.text.toString(),
+                register_email.text.toString(),
+                register_mobile.text.toString(),
+                register_pass.text.toString(),
+                register_confirm_pass.text.toString()
+            )
+
+//            if (register_name.text!!.isNotEmpty() &&
+//                register_mobile.text!!.isNotEmpty() &&
+//                register_email.text!!.isNotEmpty() &&
+//                register_pass.text!!.isNotEmpty() &&
+//                register_confirm_pass.text!!.isNotEmpty()
+//            ) {
+//                if (register_pass.text.toString() == register_confirm_pass.text.toString()) {
+//                    apiCallViewModel.registerInfo(
+//                        this,
+//                        register_name.text.toString(),
+//                        register_email.text.toString(),
+//                        register_mobile.text.toString(),
+//                        register_pass.text.toString(),
+//                        register_confirm_pass.text.toString()
+//                    )
+//                    observeViewModel()
+//                } else {
+//                    App.openDialog(
+//                        this,
+//                        "Error",
+//                        "Password mismatch or password must be grater then 7 "
+//                    )
+//                }
+//            } else {
+//                App.openDialog(
+//                    this,
+//                    "Error",
+//                    "Field not be blank"
+//                )
+//            }
         }
 
     }
@@ -81,6 +91,12 @@ class RegisterActivity : AppCompatActivity() {
                 App.openDialog(this, "Error", it.message)
             }
         })
+    }
+
+    fun registerSuccess() {
+        val intent = Intent(this, OtpActivity::class.java)
+        intent.putExtra("phone_number", register_mobile.text.toString())
+        startActivity(intent)
     }
 
 

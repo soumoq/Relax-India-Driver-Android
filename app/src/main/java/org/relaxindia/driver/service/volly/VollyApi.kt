@@ -20,16 +20,78 @@ import org.relaxindia.driver.model.ScheduleBookingModel
 import org.relaxindia.driver.service.GpsTracker
 import org.relaxindia.driver.util.App
 import org.relaxindia.driver.util.toast
-import org.relaxindia.driver.view.activity.DashboardActivity
-import org.relaxindia.driver.view.activity.DocumentActivity
-import org.relaxindia.driver.view.activity.NotificationActivity
-import org.relaxindia.driver.view.activity.ProfileActivity
+import org.relaxindia.driver.view.activity.*
 
 
 object VollyApi {
     //UserAppBaseUrl
     private const val BASE_URL_USER = "http://itmartsolution.com/demo/relaxindia.org/api/v1/user/"
     private lateinit var progressDialog: ProgressDialog
+
+    fun registerDriver(
+        context: Context,
+        name: String,
+        email: String,
+        phone: String,
+        pass: String,
+        cPass: String
+    ) {
+        progressDialog = ProgressDialog(context)
+        progressDialog.setTitle("Please wait")
+        progressDialog.setMessage("Please wait a while...")
+        progressDialog.show()
+
+        val URL = "${App.apiBaseUrl}${App.REGISTER}"
+        val requestQueue = Volley.newRequestQueue(context)
+        val stringRequest: StringRequest =
+            object : StringRequest(Request.Method.POST, URL,
+                Response.Listener<String?> { response ->
+                    try {
+                        progressDialog.dismiss()
+                        val jsonObj = JSONObject(response)
+                        val error = jsonObj.getBoolean("error")
+                        if (!error) {
+                            context.toast("Profile Updated")
+                            (context as RegisterActivity).registerSuccess()
+                        } else {
+                            val dataObj = jsonObj.getJSONObject("data")
+                            val errorObj = dataObj.getJSONObject("errors")
+                            val keys = errorObj.keys()
+                            val errorString = StringBuffer()
+                            keys.forEach {
+                                errorString.append("\u2022" + errorObj.getJSONArray(it)[0].toString() + "\n")
+                            }
+                            App.openDialog(
+                                context,
+                                "Error",
+                                errorString.toString()
+                            )
+                        }
+                    } catch (e: JSONException) {
+                        App.openDialog(context, "Error", response)
+                    }
+                },
+                Response.ErrorListener { error ->
+                    progressDialog.dismiss()
+                    context.toast("Something went wrong: $error")
+                }) {
+
+                @Throws(AuthFailureError::class)
+                override fun getParams(): Map<String, String>? {
+                    val params: MutableMap<String, String> = HashMap()
+                    params["name"] = name
+                    params["email"] = email
+                    params["phone"] = phone
+                    params["password"] = pass
+                    params["password_confirmation"] = cPass
+
+                    return params
+                }
+            }
+        requestQueue.cache.clear()
+        requestQueue.add(stringRequest)
+
+    }
 
 
     fun updateBooking(context: Context, orderId: String, deviceId: String) {
@@ -297,7 +359,7 @@ object VollyApi {
                             val keys = errorObj.keys()
                             val errorString = StringBuffer()
                             keys.forEach {
-                                errorString.append(errorObj.getJSONArray(it)[0].toString() + "\n")
+                                errorString.append("\u2022" + errorObj.getJSONArray(it)[0].toString() + "\n")
                             }
                             App.openDialog(
                                 context,

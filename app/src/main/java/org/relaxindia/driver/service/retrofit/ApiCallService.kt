@@ -11,7 +11,7 @@ import retrofit2.http.*
 interface ApiCallService {
 
     @FormUrlEncoded
-    @POST(App.register)
+    @POST(App.REGISTER)
     fun updateProfile(
         @Field("name")
         name: String,

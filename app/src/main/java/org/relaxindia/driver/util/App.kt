@@ -36,7 +36,7 @@ object App {
     //API String
     const val apiBaseUrl = "http://itmartsolution.com/demo/relaxindia.org/api/v1/driver/"
     const val apiLogin = "login"
-    const val register = "register"
+    const val REGISTER = "register"
     const val verifyOtp = "verify-otp"
     const val PROFILE = "profile"
     const val UPDATE_BOOKING = "update-booking"
