@@ -1,5 +1,6 @@
 package org.relaxindia.driver.view.activity
 
+import android.app.Activity
 import android.app.ProgressDialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -21,10 +22,6 @@ import java.lang.Exception
 import java.io.*
 import kotlin.collections.ArrayList
 import android.graphics.BitmapFactory
-import android.content.DialogInterface
-import android.widget.ImageView
-import androidx.appcompat.app.AlertDialog
-import org.relaxindia.driver.util.loadImage
 
 
 class DocumentActivity : AppCompatActivity() {
@@ -32,6 +29,11 @@ class DocumentActivity : AppCompatActivity() {
     private val SELECT_PHOTO = 1
     private val bitmaps = ArrayList<Bitmap>()
     lateinit var progressDialog: ProgressDialog
+
+    private var imageKey = "image"
+    private var drivingLicenceKey = "driving_licence"
+    private var idProofKey = "id_proof"
+    private var ambulancePaperKey = "ambulance_paper"
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,36 +43,92 @@ class DocumentActivity : AppCompatActivity() {
         VollyApi.getUploadDocument(this)
 
         document_image_select.setOnClickListener {
-            imageSelect()
+            imageSelect(1)
+        }
+
+        document_licence_select.setOnClickListener {
+            imageSelect(2)
+        }
+
+        document_id_select.setOnClickListener {
+            imageSelect(3)
+        }
+
+        document_ap_select.setOnClickListener {
+            imageSelect(4)
         }
 
         document_image_view.setOnClickListener {
-            VollyApi.getUploadDocument(this, "image")
+            VollyApi.getUploadDocument(this, imageKey)
+        }
+
+        document_licence_view.setOnClickListener {
+            VollyApi.getUploadDocument(this, drivingLicenceKey)
+        }
+
+        document_id_view.setOnClickListener {
+            VollyApi.getUploadDocument(this, idProofKey)
+        }
+
+        document_ap_view.setOnClickListener {
+            VollyApi.getUploadDocument(this, ambulancePaperKey)
         }
 
     }
 
 
-    private fun imageSelect() {
-        val photoPickerIntent = Intent(Intent.ACTION_PICK)
-        photoPickerIntent.type = "image/*"
-        startActivityForResult(photoPickerIntent, SELECT_PHOTO)
-    }
-
     fun getDocumentRes(getDocument: GetDocument, viewStatus: String) {
-        toast("${getDocument.image} $viewStatus")
+        //toast("${getDocument.image} ${getDocument.driving_licence} ${getDocument.id_proof} ${getDocument.ambulance_paper} $viewStatus")
         if (getDocument.image.equals("null")) {
             document_image_view.visibility = View.GONE
         } else {
             document_image_view.visibility = View.VISIBLE
-            if (viewStatus.equals("image")) {
+            if (viewStatus.equals(imageKey)) {
                 val intent = Intent(this, ViewImageActivity::class.java)
                 intent.putExtra("view_status", getDocument.image)
                 startActivity(intent)
             }
         }
+
+        if (getDocument.driving_licence.equals("null")) {
+            document_licence_view.visibility = View.GONE
+        } else {
+            document_licence_view.visibility = View.VISIBLE
+            if (viewStatus.equals(drivingLicenceKey)) {
+                val intent = Intent(this, ViewImageActivity::class.java)
+                intent.putExtra("view_status", getDocument.driving_licence)
+                startActivity(intent)
+            }
+        }
+
+        if (getDocument.id_proof.equals("null")) {
+            document_id_view.visibility = View.GONE
+        } else {
+            document_id_view.visibility = View.VISIBLE
+            if (viewStatus.equals(idProofKey)) {
+                val intent = Intent(this, ViewImageActivity::class.java)
+                intent.putExtra("view_status", getDocument.id_proof)
+                startActivity(intent)
+            }
+        }
+
+        if (getDocument.ambulance_paper.equals("null")) {
+            document_ap_view.visibility = View.GONE
+        } else {
+            document_ap_view.visibility = View.VISIBLE
+            if (viewStatus.equals(ambulancePaperKey)) {
+                val intent = Intent(this, ViewImageActivity::class.java)
+                intent.putExtra("view_status", getDocument.ambulance_paper)
+                startActivity(intent)
+            }
+        }
     }
 
+    private fun imageSelect(viewStatusCode: Int) {
+        val photoPickerIntent = Intent(Intent.ACTION_PICK)
+        photoPickerIntent.type = "image/*"
+        startActivityForResult(photoPickerIntent, viewStatusCode)
+    }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -78,7 +136,7 @@ class DocumentActivity : AppCompatActivity() {
         // Here we need to check if the activity that was triggers was the Image Gallery.
         // If it is the requestCode will match the LOAD_IMAGE_RESULTS value.
         // If the resultCode is RESULT_OK and there is some data we know that an image was picked.
-        if (requestCode == SELECT_PHOTO && resultCode == RESULT_OK && data != null) {
+        if (requestCode >= 1 && resultCode == RESULT_OK && data != null) {
             // Let's read picked image data - its URI
             val pickedImage = data.data
             // Let's read picked image path using content resolver
@@ -92,14 +150,32 @@ class DocumentActivity : AppCompatActivity() {
 
             // Do something with the bitmap
             bitmaps.add(bitmap)
-            saveImage(bitmaps, "image")
+            var viewStatus = ""
+            when (requestCode) {
+                1 -> {
+                    viewStatus = imageKey
+                }
+                2 -> {
+                    viewStatus = drivingLicenceKey
+
+                }
+                3 -> {
+                    viewStatus = idProofKey
+
+                }
+                4 -> {
+                    viewStatus = ambulancePaperKey
+                }
+            }
+            //toast(viewStatus)
+            saveImage(bitmaps, viewStatus)
 
             // At the end remember to close the cursor or you will end with the RuntimeException!
             cursor.close()
         }
     }
 
-    private fun saveImage(myBitmap: ArrayList<Bitmap>, image: String) {
+    private fun saveImage(myBitmap: ArrayList<Bitmap>, keyName: String) {
         val imagePath = ArrayList<String>()
 
         for (i in myBitmap.indices) {
@@ -112,7 +188,7 @@ class DocumentActivity : AppCompatActivity() {
             }
             try {
                 val f =
-                    File(imageDirectory, "$image.jpg")
+                    File(imageDirectory, "$keyName.jpg")
                 f.createNewFile()
                 val fo = FileOutputStream(f)
                 fo.write(bytes.toByteArray())
@@ -142,7 +218,7 @@ class DocumentActivity : AppCompatActivity() {
 //            formBuilder.addFormDataPart("comment", comment.getText().toString())
             for (i in imageFile.indices) {
                 formBuilder.addFormDataPart(
-                    "image", imageFile[i].name,
+                    keyName, imageFile[i].name,
                     RequestBody.create(MediaType.parse("image/jpeg"), imageFile[i])
                 )
             }
