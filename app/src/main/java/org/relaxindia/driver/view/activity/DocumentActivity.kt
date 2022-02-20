@@ -1,9 +1,7 @@
 package org.relaxindia.driver.view.activity
 
-import android.R.attr
+import android.app.ProgressDialog
 import android.content.Intent
-import android.database.Cursor
-import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Environment
@@ -14,29 +12,27 @@ import org.relaxindia.driver.model.GetDocument
 import org.relaxindia.driver.service.volly.VollyApi
 import org.relaxindia.driver.util.toast
 import android.provider.MediaStore
-import java.io.File
-import android.app.Activity
-import java.io.FileNotFoundException
-import android.provider.MediaStore.MediaColumns
-import android.R.attr.data
+import android.graphics.Bitmap
+import android.media.MediaScannerConnection
 import android.util.Log
 import okhttp3.*
-import org.json.JSONObject
 import org.relaxindia.driver.util.App
-import java.io.IOException
 import java.lang.Exception
-import okhttp3.Route
-
-
-
+import java.io.*
+import kotlin.collections.ArrayList
+import android.graphics.BitmapFactory
+import android.content.DialogInterface
+import android.widget.ImageView
+import androidx.appcompat.app.AlertDialog
+import org.relaxindia.driver.util.loadImage
 
 
 class DocumentActivity : AppCompatActivity() {
 
-    val image = 1
-    val drivingLicence = 2
-    val idProve = 3;
-    val ambulancePaper = 4
+    private val SELECT_PHOTO = 1
+    private val bitmaps = ArrayList<Bitmap>()
+    lateinit var progressDialog: ProgressDialog
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,97 +41,134 @@ class DocumentActivity : AppCompatActivity() {
         VollyApi.getUploadDocument(this)
 
         document_image_select.setOnClickListener {
-            val photoPickerIntent = Intent(Intent.ACTION_PICK)
-            photoPickerIntent.type = "image/*"
-            startActivityForResult(photoPickerIntent, image)
+            imageSelect()
+        }
+
+        document_image_view.setOnClickListener {
+            VollyApi.getUploadDocument(this, "image")
         }
 
     }
 
-    fun getDocumentRes(getDocument: GetDocument) {
-        toast(getDocument.image)
+
+    private fun imageSelect() {
+        val photoPickerIntent = Intent(Intent.ACTION_PICK)
+        photoPickerIntent.type = "image/*"
+        startActivityForResult(photoPickerIntent, SELECT_PHOTO)
+    }
+
+    fun getDocumentRes(getDocument: GetDocument, viewStatus: String) {
+        toast("${getDocument.image} $viewStatus")
         if (getDocument.image.equals("null")) {
-            document_image_download.visibility = View.GONE
+            document_image_view.visibility = View.GONE
         } else {
-            document_image_download.visibility = View.VISIBLE
-        }
-    }
-
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, intentData: Intent?) {
-        super.onActivityResult(requestCode, resultCode, intentData)
-        if (requestCode > 0) if (resultCode === RESULT_OK) {
-            val selectedImage: Uri = intentData?.data!!
-            val filePath = getPath(selectedImage)
-            val file_extn = filePath!!.substring(filePath!!.lastIndexOf(".") + 1)
-            //image_name_tv.setText(filePath)
-            toast("$requestCode/t" + filePath)
-            try {
-                if (file_extn == "img" || file_extn == "jpg" || file_extn == "jpeg" || file_extn == "gif" || file_extn == "png") {
-                    //FINE
-                    if (requestCode == 1)
-                        uploadImage("image", filePath)
-                } else {
-                    //NOT IN REQUIRED FORMAT
-                    toast("NOT IN REQUIRED FORMAT")
-                }
-            } catch (e: FileNotFoundException) {
-                // TODO Auto-generated catch block
-                toast("Exception : ${e.message}")
+            document_image_view.visibility = View.VISIBLE
+            if (viewStatus.equals("image")) {
+                val intent = Intent(this, ViewImageActivity::class.java)
+                intent.putExtra("view_status", getDocument.image)
+                startActivity(intent)
             }
         }
     }
 
-    private fun getPath(uri: Uri?): String? {
-        val projection = arrayOf(MediaColumns.DATA)
-        val cursor = managedQuery(uri, projection, null, null, null)
-        val column_index = cursor
-            .getColumnIndexOrThrow(MediaColumns.DATA)
-        cursor.moveToFirst()
-        val imagePath = cursor.getString(column_index)
-        return cursor.getString(column_index)
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        // Here we need to check if the activity that was triggers was the Image Gallery.
+        // If it is the requestCode will match the LOAD_IMAGE_RESULTS value.
+        // If the resultCode is RESULT_OK and there is some data we know that an image was picked.
+        if (requestCode == SELECT_PHOTO && resultCode == RESULT_OK && data != null) {
+            // Let's read picked image data - its URI
+            val pickedImage = data.data
+            // Let's read picked image path using content resolver
+            val filePath = arrayOf(MediaStore.Images.Media.DATA)
+            val cursor = contentResolver.query(pickedImage!!, filePath, null, null, null)
+            cursor!!.moveToFirst()
+            val imagePath = cursor.getString(cursor.getColumnIndex(filePath[0]))
+            val options = BitmapFactory.Options()
+            options.inPreferredConfig = Bitmap.Config.ARGB_8888
+            val bitmap = BitmapFactory.decodeFile(imagePath, options)
+
+            // Do something with the bitmap
+            bitmaps.add(bitmap)
+            saveImage(bitmaps, "image")
+
+            // At the end remember to close the cursor or you will end with the RuntimeException!
+            cursor.close()
+        }
     }
 
-    private fun uploadImage(param: String, filePath: String) {
-        //Upload Images
+    private fun saveImage(myBitmap: ArrayList<Bitmap>, image: String) {
+        val imagePath = ArrayList<String>()
+
+        for (i in myBitmap.indices) {
+            val bytes = ByteArrayOutputStream()
+            myBitmap.get(i).compress(Bitmap.CompressFormat.JPEG, 90, bytes)
+            val imageDirectory =
+                File(Environment.getExternalStorageDirectory().toString() + "/RelaxIndia/Documents")
+            if (!imageDirectory.exists()) {
+                imageDirectory.mkdirs()
+            }
+            try {
+                val f =
+                    File(imageDirectory, "$image.jpg")
+                f.createNewFile()
+                val fo = FileOutputStream(f)
+                fo.write(bytes.toByteArray())
+                MediaScannerConnection.scanFile(this, arrayOf(f.path), arrayOf("image/jpeg"), null)
+                fo.close()
+                imagePath.add(f.absolutePath)
+                Log.e("GET_PATH", f.absolutePath)
+            } catch (e1: Exception) {
+                e1.printStackTrace()
+            }
+        }
+
+        //upload image
+        progressDialog = ProgressDialog(this)
+        progressDialog.setTitle("Please wait")
+        progressDialog.setMessage("Please wait will send you a otp")
+        progressDialog.show()
+
         val client = OkHttpClient()
         try {
+            val imageFile = ArrayList<File>()
+            for (i in imagePath.indices) {
+                imageFile.add(File(imagePath[i]))
+            }
             val formBuilder = MultipartBody.Builder().setType(MultipartBody.FORM)
-            formBuilder.addFormDataPart(
-                "Authorization",App.getUserToken(this)
-            )
-            formBuilder.addFormDataPart(
-                "driving_licence", "param.png",
-                RequestBody.create(
-                    MediaType.parse("image/jpeg"),
-                    filePath
+//            formBuilder.addFormDataPart("userid", userId)
+//            formBuilder.addFormDataPart("comment", comment.getText().toString())
+            for (i in imageFile.indices) {
+                formBuilder.addFormDataPart(
+                    "image", imageFile[i].name,
+                    RequestBody.create(MediaType.parse("image/jpeg"), imageFile[i])
                 )
-            )
-
+            }
             val requestBody: RequestBody = formBuilder.build()
             val request = Request.Builder()
-                .url(App.apiBaseUrl + App.UPLOAD_DOCUMENT)
+                .url("${App.apiBaseUrl}upload-documents")
+                .addHeader("Authorization", App.getUserToken(this))
                 .post(requestBody)
                 .build()
-
-
-
-
             client.newCall(request).enqueue(object : Callback {
                 override fun onFailure(call: Call, e: IOException) {
-                    Log.e("UPLOADIMAGE", "ERROR")
-                    this@DocumentActivity.toast("Error")
+                    toast(e.message.toString())
+                    progressDialog.dismiss()
                 }
 
                 @Throws(IOException::class)
                 override fun onResponse(call: Call, response: Response) {
-                    Log.e("UPLOADIMAGE", "asdasa $response");
+                    progressDialog.dismiss()
+                    finish()
+                    startActivity(intent)
                 }
             })
-
         } catch (e: Exception) {
-            toast("Exception : ${e.message}")
+            toast(e.message.toString())
         }
+
     }
 
 

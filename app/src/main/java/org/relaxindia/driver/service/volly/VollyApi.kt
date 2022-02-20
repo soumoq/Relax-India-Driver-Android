@@ -401,7 +401,7 @@ object VollyApi {
 
 
     //get push notification
-    fun getUploadDocument(context: Context) {
+    fun getUploadDocument(context: Context, viewStatus: String = "") {
         progressDialog = ProgressDialog(context)
         progressDialog.setTitle("Please wait")
         progressDialog.setMessage("Please wait a while...")
@@ -424,7 +424,7 @@ object VollyApi {
                                 dataobj.getString("id_proof"),
                                 dataobj.getString("ambulance_paper"),
                             )
-                            (context as DocumentActivity).getDocumentRes(getDocument)
+                            (context as DocumentActivity).getDocumentRes(getDocument, viewStatus)
                         } else {
                             App.openDialog(
                                 context,

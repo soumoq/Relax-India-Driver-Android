@@ -93,12 +93,12 @@
                         android:textSize="15sp" />
 
                     <Button
-                        android:id="@+id/document_image_download"
+                        android:id="@+id/document_image_view"
                         android:layout_width="wrap_content"
                         android:layout_height="40dp"
                         android:layout_alignParentRight="true"
                         android:backgroundTint="@color/app_color"
-                        android:text="Download"
+                        android:text="View"
                         android:textAllCaps="false" />
 
                 </RelativeLayout>

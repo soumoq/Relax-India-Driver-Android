@@ -24,8 +24,7 @@
 
         <item
             android:id="@+id/document_upload"
-            android:title="Document Upload"
-            android:visible="false" />
+            android:title="Document Upload" />
 
         <item
             android:id="@+id/schedule_booking_list"
