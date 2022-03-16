@@ -25,7 +25,7 @@ import org.relaxindia.driver.view.activity.*
 
 object VollyApi {
     //UserAppBaseUrl
-    private const val BASE_URL_USER = "http://itmartsolution.com/demo/relaxindia.org/api/v1/user/"
+    private const val BASE_URL_USER = "https://recztrade.com/demo/relaxindia.org/api/v1/user/"
     private lateinit var progressDialog: ProgressDialog
 
     fun registerDriver(

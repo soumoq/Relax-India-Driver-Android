@@ -34,7 +34,7 @@ object App {
         "I certify that the information provided is true & correct and I also agree the </font>and <font color=#1b9ff1>Terms & Condition</font>"
 
     //API String
-    const val apiBaseUrl = "http://itmartsolution.com/demo/relaxindia.org/api/v1/driver/"
+    const val apiBaseUrl = "https://recztrade.com/demo/relaxindia.org/api/v1/driver/"
     const val apiLogin = "login"
     const val REGISTER = "register"
     const val verifyOtp = "verify-otp"
