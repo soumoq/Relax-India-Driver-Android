@@ -22,7 +22,7 @@ class ViewImageActivity : AppCompatActivity() {
         )
 
         viewStatus = intent.getStringExtra("view_status").toString()
-        toast(viewStatus)
+        //toast(viewStatus)
         view_image.loadImage(viewStatus)
     }
 

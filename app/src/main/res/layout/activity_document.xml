@@ -61,7 +61,8 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:padding="15dp">
 
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -69,38 +70,43 @@
                         android:layout_marginLeft="5dp"
                         android:layout_marginRight="5dp">
 
-                        <TextView
+                        <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
-                            android:text="1. Driver Image"
-                            android:textColor="@color/black"
-                            android:textSize="15sp"
-                            android:textStyle="bold" />
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="1. Driver Image"
+                                android:textColor="@color/black"
+                                android:textSize="15sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/document_image_view"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="15dp"
+                                android:layout_marginTop="-3dp"
+                                android:backgroundTint="@color/app_color"
+                                android:text="View"
+                                android:textAllCaps="false"
+                                android:textColor="@color/app_color"
+                                android:textSize="15dp" />
+
+
+                        </LinearLayout>
+
 
                         <Button
                             android:id="@+id/document_image_select"
                             android:layout_width="wrap_content"
-                            android:layout_height="40dp"
+                            android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"
                             android:backgroundTint="@color/app_color"
-                            android:text="Select"
-                            android:textAllCaps="false" />
-
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="5dp">
-
-                        <Button
-                            android:id="@+id/document_image_view"
-                            android:layout_width="wrap_content"
-                            android:layout_height="40dp"
-                            android:layout_alignParentRight="true"
-                            android:backgroundTint="@color/app_color"
-                            android:text="View"
+                            android:text="Upload"
                             android:textAllCaps="false" />
 
                     </RelativeLayout>
@@ -123,7 +129,8 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:padding="15dp">
 
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -131,38 +138,43 @@
                         android:layout_marginLeft="5dp"
                         android:layout_marginRight="5dp">
 
-                        <TextView
+                        <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
-                            android:text="2. Driving licence"
-                            android:textColor="@color/black"
-                            android:textSize="15sp"
-                            android:textStyle="bold" />
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="2. Driving licence"
+                                android:textColor="@color/black"
+                                android:textSize="15sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/document_licence_view"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="15dp"
+                                android:layout_marginTop="-3dp"
+                                android:backgroundTint="@color/app_color"
+                                android:text="View"
+                                android:textAllCaps="false"
+                                android:textColor="@color/app_color"
+                                android:textSize="15dp" />
+
+
+                        </LinearLayout>
+
 
                         <Button
                             android:id="@+id/document_licence_select"
                             android:layout_width="wrap_content"
-                            android:layout_height="40dp"
+                            android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"
                             android:backgroundTint="@color/app_color"
-                            android:text="Select"
-                            android:textAllCaps="false" />
-
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="5dp">
-
-                        <Button
-                            android:id="@+id/document_licence_view"
-                            android:layout_width="wrap_content"
-                            android:layout_height="40dp"
-                            android:layout_alignParentRight="true"
-                            android:backgroundTint="@color/app_color"
-                            android:text="View"
+                            android:text="Upload"
                             android:textAllCaps="false" />
 
                     </RelativeLayout>
@@ -185,7 +197,8 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:padding="15dp">
 
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -193,38 +206,43 @@
                         android:layout_marginLeft="5dp"
                         android:layout_marginRight="5dp">
 
-                        <TextView
+                        <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
-                            android:text="3. Id proof"
-                            android:textColor="@color/black"
-                            android:textSize="15sp"
-                            android:textStyle="bold" />
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="3. Id proof"
+                                android:textColor="@color/black"
+                                android:textSize="15sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/document_id_view"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="15dp"
+                                android:layout_marginTop="-3dp"
+                                android:backgroundTint="@color/app_color"
+                                android:text="View"
+                                android:textAllCaps="false"
+                                android:textColor="@color/app_color"
+                                android:textSize="15dp" />
+
+
+                        </LinearLayout>
+
 
                         <Button
                             android:id="@+id/document_id_select"
                             android:layout_width="wrap_content"
-                            android:layout_height="40dp"
+                            android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"
                             android:backgroundTint="@color/app_color"
-                            android:text="Select"
-                            android:textAllCaps="false" />
-
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="5dp">
-
-                        <Button
-                            android:id="@+id/document_id_view"
-                            android:layout_width="wrap_content"
-                            android:layout_height="40dp"
-                            android:layout_alignParentRight="true"
-                            android:backgroundTint="@color/app_color"
-                            android:text="View"
+                            android:text="Upload"
                             android:textAllCaps="false" />
 
                     </RelativeLayout>
@@ -247,7 +265,8 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:padding="15dp">
 
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -255,38 +274,43 @@
                         android:layout_marginLeft="5dp"
                         android:layout_marginRight="5dp">
 
-                        <TextView
+                        <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
-                            android:text="4. Ambulance paper"
-                            android:textColor="@color/black"
-                            android:textSize="15sp"
-                            android:textStyle="bold" />
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="4. Ambulance paper"
+                                android:textColor="@color/black"
+                                android:textSize="15sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/document_ap_view"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="15dp"
+                                android:layout_marginTop="-3dp"
+                                android:backgroundTint="@color/app_color"
+                                android:text="View"
+                                android:textAllCaps="false"
+                                android:textColor="@color/app_color"
+                                android:textSize="15dp" />
+
+
+                        </LinearLayout>
+
 
                         <Button
                             android:id="@+id/document_ap_select"
                             android:layout_width="wrap_content"
-                            android:layout_height="40dp"
+                            android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"
                             android:backgroundTint="@color/app_color"
-                            android:text="Select"
-                            android:textAllCaps="false" />
-
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="5dp">
-
-                        <Button
-                            android:id="@+id/document_ap_view"
-                            android:layout_width="wrap_content"
-                            android:layout_height="40dp"
-                            android:layout_alignParentRight="true"
-                            android:backgroundTint="@color/app_color"
-                            android:text="View"
+                            android:text="Upload"
                             android:textAllCaps="false" />
 
                     </RelativeLayout>

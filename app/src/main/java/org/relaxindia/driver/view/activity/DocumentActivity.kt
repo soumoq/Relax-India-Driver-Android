@@ -40,6 +40,10 @@ class DocumentActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_document)
 
+        document_back.setOnClickListener {
+            onBackPressed()
+        }
+
         VollyApi.getUploadDocument(this)
 
         document_image_select.setOnClickListener {
@@ -204,7 +208,7 @@ class DocumentActivity : AppCompatActivity() {
         //upload image
         progressDialog = ProgressDialog(this)
         progressDialog.setTitle("Please wait")
-        progressDialog.setMessage("Please wait will send you a otp")
+        progressDialog.setMessage("Documents uploading...")
         progressDialog.show()
 
         val client = OkHttpClient()
