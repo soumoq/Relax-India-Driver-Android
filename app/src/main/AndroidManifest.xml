@@ -21,6 +21,9 @@
         android:theme="@style/Theme.RelaxIndiaDriver"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".view.activity.RejectedNotificationActivity"
+            android:exported="false" />
+        <activity
             android:name=".view.activity.ViewImageActivity"
             android:exported="false" />
         <activity

@@ -286,6 +286,12 @@ object VollyApi {
                             val notiData = jsonObj.getJSONObject("data")
                             val notiArr = notiData.getJSONArray(status)
                             if (notiArr.length() > 0) {
+                                if (viewStatus.equals("NotificationActivity")) {
+                                    (context as NotificationActivity).setNotiView(true)
+                                } else if (viewStatus.equals("RejectedNotificationActivity")) {
+                                    (context as RejectedNotificationActivity).setRejNotiView(true)
+                                }
+
                                 for (i in 0 until notiArr.length()) {
                                     val obj = notiArr.getJSONObject(i)
                                     notiList.add(
@@ -296,6 +302,10 @@ object VollyApi {
                                     )
                                     if (viewStatus.equals("NotificationActivity")) {
                                         (context as NotificationActivity).setNotiList(notiList)
+                                    } else if (viewStatus.equals("RejectedNotificationActivity")) {
+                                        (context as RejectedNotificationActivity).setRejNotiList(
+                                            notiList
+                                        )
                                     } else {
                                         (context as DashboardActivity).setNotiList(notiList)
                                     }
@@ -303,6 +313,8 @@ object VollyApi {
                             } else {
                                 if (viewStatus.equals("NotificationActivity")) {
                                     (context as NotificationActivity).setNotiView(false)
+                                } else if (viewStatus.equals("RejectedNotificationActivity")) {
+                                    (context as RejectedNotificationActivity).setRejNotiView(false)
                                 }
 
                             }

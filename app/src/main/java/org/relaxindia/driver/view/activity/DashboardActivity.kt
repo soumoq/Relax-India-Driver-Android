@@ -143,6 +143,9 @@ class DashboardActivity : AppCompatActivity() {
                 R.id.schedule_booking_list -> {
                     VollyApi.getScheduleBooking(this)
                 }
+                R.id.menu_rej_notification -> {
+                    startActivity(Intent(this, RejectedNotificationActivity::class.java))
+                }
             }
             true
         }
