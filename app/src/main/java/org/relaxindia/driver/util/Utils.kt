@@ -18,6 +18,15 @@ fun ImageView.loadImage(uri: String?) {
     progressBar.show()
     Glide.with(this.context)
         .load(uri)
+        .into(this)
+}
+
+fun ImageView.loadImageForDocument(uri: String?) {
+    val progressBar = ProgressDialog(this.context)
+    progressBar.setTitle("Please Wait!")
+    progressBar.show()
+    Glide.with(this.context)
+        .load(uri)
         .listener(object : RequestListener<Drawable> {
             override fun onLoadFailed(
                 e: GlideException?,

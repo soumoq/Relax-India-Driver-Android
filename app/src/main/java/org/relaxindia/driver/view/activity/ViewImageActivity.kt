@@ -7,6 +7,7 @@ import android.view.WindowManager
 import kotlinx.android.synthetic.main.activity_view_image.*
 import org.relaxindia.driver.R
 import org.relaxindia.driver.util.loadImage
+import org.relaxindia.driver.util.loadImageForDocument
 import org.relaxindia.driver.util.toast
 
 class ViewImageActivity : AppCompatActivity() {
@@ -23,7 +24,7 @@ class ViewImageActivity : AppCompatActivity() {
 
         viewStatus = intent.getStringExtra("view_status").toString()
         //toast(viewStatus)
-        view_image.loadImage(viewStatus)
+        view_image.loadImageForDocument(viewStatus)
     }
 
     override fun startActivity(intent: Intent?) {
