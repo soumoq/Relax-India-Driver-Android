@@ -294,10 +294,17 @@ object VollyApi {
 
                                 for (i in 0 until notiArr.length()) {
                                     val obj = notiArr.getJSONObject(i)
+                                    val userObj = obj.getJSONObject("user")
                                     notiList.add(
                                         NotificationApiModel(
+                                            obj.getInt("booking_id"),
                                             obj.getString("details"),
-                                            obj.getString("created_at")
+                                            obj.getString("created_at"),
+                                            userObj.getString("name"),
+                                            userObj.getString("phone"),
+                                            userObj.getString("email"),
+                                            obj.getInt("is_reached"),
+                                            viewStatus
                                         )
                                     )
                                     if (viewStatus.equals("NotificationActivity")) {
@@ -572,5 +579,66 @@ object VollyApi {
         requestQueue.add(stringRequest)
 
     }
+
+
+    fun reched(context: Context, orderId: String) {
+        progressDialog = ProgressDialog(context)
+        progressDialog.setTitle("Please wait")
+        progressDialog.setMessage("Please wait a while...")
+        progressDialog.show()
+
+        val URL = "${App.apiBaseUrl}${App.REJECT_BOOKING}"
+        val requestQueue = Volley.newRequestQueue(context)
+        val stringRequest: StringRequest =
+            object : StringRequest(Request.Method.PATCH, URL,
+                Response.Listener<String?> { response ->
+                    progressDialog.dismiss()
+                    try {
+                        val jsonObj = JSONObject(response)
+                        val error = jsonObj.getBoolean("error")
+                        if (!error) {
+                            App.notifyMsg = null
+                            App.openDialog(
+                                context,
+                                "Cancellation successfully.",
+                                "Thanks for accept the booking. We will let the patent know that you accept the booking."
+                            )
+                        } else {
+                            App.openDialog(
+                                context,
+                                "Cancellation failed.",
+                                "Someone already accept the booking."
+                            )
+                        }
+                    } catch (e: JSONException) {
+                        App.openDialog(context, "Error", response)
+                    }
+                },
+                Response.ErrorListener { error ->
+                    progressDialog.dismiss()
+                    context.toast("Something went wrong: $error")
+                }) {
+
+                @Throws(AuthFailureError::class)
+                override fun getHeaders(): MutableMap<String, String> {
+                    val header: MutableMap<String, String> = HashMap()
+                    header["Authorization"] = App.getUserToken(context)
+                    header["Content-Type"] = "application/json"
+                    header["Accept"] = "application/json"
+                    return header
+                }
+
+                @Throws(AuthFailureError::class)
+                override fun getParams(): Map<String, String>? {
+                    val params: MutableMap<String, String> = HashMap()
+                    params["booking_id"] = orderId
+
+                    return params
+                }
+            }
+        requestQueue.cache.clear()
+        requestQueue.add(stringRequest)
+    }
+
 
 }

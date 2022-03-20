@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.android.synthetic.main.activity_notifiaction.*
 import org.relaxindia.driver.NotificationApiModel
 import org.relaxindia.driver.R
@@ -57,7 +58,12 @@ class NotificationActivity : AppCompatActivity() {
             toast(e.message.toString())
         }
 
-        VollyApi.updateBooking(this, bookingId, "NA")
+
+        FirebaseMessaging.getInstance().token.addOnSuccessListener {
+            VollyApi.updateBooking(this, bookingId, it)
+        }
+
+
     }
 
 

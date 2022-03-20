@@ -15,6 +15,7 @@ import org.relaxindia.driver.view.activity.NotificationActivity
 
 import android.content.Intent
 import android.net.Uri
+import org.relaxindia.driver.view.activity.NotificationDetailsActivity
 
 
 class NotificationAdapter(context: Context, isDashboard: Boolean = false) :
@@ -85,6 +86,22 @@ class NotificationAdapter(context: Context, isDashboard: Boolean = false) :
             view.noti_list_reject.setOnClickListener {
                 (view.context as NotificationActivity).rejectBooking(obj.getString("id"))
             }
+
+            view.noti_layout.setOnClickListener {
+                val intent = Intent(view.context, NotificationDetailsActivity::class.java)
+                intent.putExtra("noti_details", notificationApiModel.details)
+                intent.putExtra("user_name", notificationApiModel.userName)
+                intent.putExtra("user_email", notificationApiModel.userEmail)
+                intent.putExtra("user_phone", notificationApiModel.userPhone)
+                intent.putExtra("created_at", notificationApiModel.created_at)
+                intent.putExtra("booking_id", notificationApiModel.bookingId.toString())
+                intent.putExtra("activity", notificationApiModel.activity)
+                intent.putExtra("is_reached", notificationApiModel.isReached.toString())
+                Log.e("ASQDWEQ", notificationApiModel.isReached.toString())
+
+                view.context.startActivity(intent)
+            }
+
         }
     }
 }
