@@ -3,6 +3,7 @@ package org.relaxindia.driver.service.volly
 import android.app.ProgressDialog
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 
 import org.json.JSONException
 
@@ -16,11 +17,17 @@ import com.android.volley.toolbox.Volley
 import org.relaxindia.driver.NotificationApiModel
 import org.relaxindia.driver.model.GetDashboard
 import org.relaxindia.driver.model.GetDocument
+import org.relaxindia.driver.model.Reached
 import org.relaxindia.driver.model.ScheduleBookingModel
+import org.relaxindia.driver.model.driverProfile.ProfileRes
 import org.relaxindia.driver.service.GpsTracker
+import org.relaxindia.driver.service.retrofit.ApiCallService
+import org.relaxindia.driver.service.retrofit.RestApiServiceBuilder
 import org.relaxindia.driver.util.App
 import org.relaxindia.driver.util.toast
 import org.relaxindia.driver.view.activity.*
+import retrofit2.Call
+import retrofit2.Callback
 
 
 object VollyApi {
@@ -182,13 +189,13 @@ object VollyApi {
                             App.openDialog(
                                 context,
                                 "Cancellation successfully.",
-                                "Thanks for accept the booking. We will let the patent know that you accept the booking."
+                                ""
                             )
                         } else {
                             App.openDialog(
                                 context,
                                 "Cancellation failed.",
-                                "Someone already accept the booking."
+                                ""
                             )
                         }
                     } catch (e: JSONException) {
@@ -581,63 +588,32 @@ object VollyApi {
     }
 
 
-    fun reched(context: Context, orderId: String) {
-        progressDialog = ProgressDialog(context)
-        progressDialog.setTitle("Please wait")
-        progressDialog.setMessage("Please wait a while...")
-        progressDialog.show()
-
-        val URL = "${App.apiBaseUrl}${App.REJECT_BOOKING}"
-        val requestQueue = Volley.newRequestQueue(context)
-        val stringRequest: StringRequest =
-            object : StringRequest(Request.Method.PATCH, URL,
-                Response.Listener<String?> { response ->
-                    progressDialog.dismiss()
-                    try {
-                        val jsonObj = JSONObject(response)
-                        val error = jsonObj.getBoolean("error")
-                        if (!error) {
-                            App.notifyMsg = null
-                            App.openDialog(
-                                context,
-                                "Cancellation successfully.",
-                                "Thanks for accept the booking. We will let the patent know that you accept the booking."
-                            )
-                        } else {
-                            App.openDialog(
-                                context,
-                                "Cancellation failed.",
-                                "Someone already accept the booking."
-                            )
-                        }
-                    } catch (e: JSONException) {
-                        App.openDialog(context, "Error", response)
-                    }
-                },
-                Response.ErrorListener { error ->
-                    progressDialog.dismiss()
-                    context.toast("Something went wrong: $error")
-                }) {
-
-                @Throws(AuthFailureError::class)
-                override fun getHeaders(): MutableMap<String, String> {
-                    val header: MutableMap<String, String> = HashMap()
-                    header["Authorization"] = App.getUserToken(context)
-                    header["Content-Type"] = "application/json"
-                    header["Accept"] = "application/json"
-                    return header
-                }
-
-                @Throws(AuthFailureError::class)
-                override fun getParams(): Map<String, String>? {
-                    val params: MutableMap<String, String> = HashMap()
-                    params["booking_id"] = orderId
-
-                    return params
+    fun reachedLoc(
+        context: Context,
+        bookingId: String,
+    ) {
+        val restApiService = RestApiServiceBuilder().buildService(ApiCallService::class.java)
+        val response: Call<Reached> = restApiService.reached(App.getUserToken(context), bookingId)
+        response.enqueue(object : Callback<Reached> {
+            override fun onResponse(call: Call<Reached>, response: retrofit2.Response<Reached>) {
+                //context.toast(response.body().toString())
+                val reached = response.body()
+                if (response.body()?.error == true) {
+                    App.openDialog(context, "Error", response.body()?.message.toString())
+                } else {
+                    context.toast("Record saved successfully.")
+                    (context as NotificationDetailsActivity).onBackPressed()
                 }
             }
-        requestQueue.cache.clear()
-        requestQueue.add(stringRequest)
+
+            override fun onFailure(call: Call<Reached>, t: Throwable) {
+                context.toast("Error ${t.message}")
+                Log.e("SADAS", t.message.toString())
+            }
+
+        })
+
+
     }
 
 

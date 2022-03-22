@@ -47,6 +47,7 @@ object App {
     const val GET_SCHEDULE_BOOKING : String = "get-schedule-bookings"
     const val UPLOAD_DOCUMENT = "upload-documents"
     const val DASHBOARD = "dashboard"
+    const val REACHED = "reached-to-location"
 
 
 

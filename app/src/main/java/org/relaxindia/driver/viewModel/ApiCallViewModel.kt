@@ -43,7 +43,7 @@ class ApiCallViewModel : ViewModel() {
         progressDialog.show()
 
         val response: Call<GlobalResponse> =
-            restApiService.updateProfile(name, email, phone, password, cPassword,"")
+            restApiService.updateProfile(name, email, phone, password, cPassword, "")
         response.enqueue(object : Callback<GlobalResponse> {
             override fun onResponse(
                 call: Call<GlobalResponse>,
@@ -113,8 +113,12 @@ class ApiCallViewModel : ViewModel() {
             ) {
                 progressDialog.dismiss()
                 if (response.isSuccessful) {
-                    login.value = response.body()
-                    Log.e("$LOG-loginInfo-if", "Success")
+                    if (response.body()?.error == true) {
+                        App.openDialog(context, "Error", response.body()?.message.toString())
+                    } else {
+                        login.value = response.body()
+                        Log.e("$LOG-loginInfo-if", "Success")
+                    }
                 } else {
                     App.openDialog(
                         context,

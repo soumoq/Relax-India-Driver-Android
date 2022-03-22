@@ -2,6 +2,7 @@ package org.relaxindia.driver.service.retrofit
 
 
 import org.relaxindia.driver.model.GlobalResponse
+import org.relaxindia.driver.model.Reached
 import org.relaxindia.driver.model.driverProfile.ProfileRes
 import org.relaxindia.driver.util.App
 import org.relaxindia.driver.model.otp.UserToken
@@ -51,6 +52,15 @@ interface ApiCallService {
         @Header("Authorization")
         authHeader: String,
     ): Call<ProfileRes>
+
+    @FormUrlEncoded
+    @POST(App.REACHED)
+    fun reached(
+        @Header("Authorization")
+        authHeader: String,
+        @Field("booking_id")
+        booking_id: String,
+    ): Call<Reached>
 
 
 }

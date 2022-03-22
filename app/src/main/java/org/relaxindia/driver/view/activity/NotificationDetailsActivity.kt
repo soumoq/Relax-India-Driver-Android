@@ -49,7 +49,7 @@ class NotificationDetailsActivity : AppCompatActivity() {
         isReached = intent.getStringExtra("is_reached").toString()
         activity = intent.getStringExtra("activity").toString()
         bookingId = intent.getStringExtra("booking_id").toString()
-        toast(isReached)
+        //toast(isReached)
 
         if (activity.equals("DashboardActivity")) {
             if (isReached.equals("0"))
@@ -127,7 +127,7 @@ class NotificationDetailsActivity : AppCompatActivity() {
         }
 
         i_am_reach.setOnClickListener {
-
+            VollyApi.reachedLoc(this, bookingId)
         }
 
     }
