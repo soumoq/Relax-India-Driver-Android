@@ -133,7 +133,7 @@
                         android:layout_gravity="center"
                         android:layout_marginRight="5dp"
                         android:gravity="center"
-                        android:text="Track"
+                        android:text="Details"
                         android:textSize="12.5sp" />
 
                     <ImageView
