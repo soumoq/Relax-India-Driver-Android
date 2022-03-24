@@ -66,18 +66,6 @@ class NotificationAdapter(context: Context, isDashboard: Boolean = false) :
                 view.noti_action.visibility = View.VISIBLE
             }
 
-            view.locate_googlemap.setOnClickListener {
-                val strUri =
-                    "http://maps.google.com/maps?q=loc:" + obj.getString("user_latitude") + "," + obj.getString(
-                        "user_longitude"
-                    ) + " (" + "Label which you want" + ")"
-                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(strUri))
-                intent.setClassName(
-                    "com.google.android.apps.maps",
-                    "com.google.android.maps.MapsActivity"
-                )
-                view.context.startActivity(intent)
-            }
 
             view.noti_list_accept.setOnClickListener {
                 (view.context as NotificationActivity).bookOrder(obj.getString("id"))

@@ -200,6 +200,7 @@
                                 android:textSize="13sp" />
 
                             <LinearLayout
+                                android:id="@+id/track_loc"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="right"
@@ -230,7 +231,8 @@
                         android:id="@+id/booking_info_customer_support"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="15dp">
+                        android:layout_marginLeft="15dp"
+                        android:visibility="gone">
 
                         <ImageView
                             android:layout_width="20dp"
