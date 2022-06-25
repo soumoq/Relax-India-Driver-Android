@@ -186,7 +186,7 @@ class DocumentActivity : AppCompatActivity() {
             val bytes = ByteArrayOutputStream()
             myBitmap.get(i).compress(Bitmap.CompressFormat.JPEG, 90, bytes)
             val imageDirectory =
-                File(Environment.getExternalStorageDirectory().toString() + "/RelaxIndia/Documents")
+                File(this.getExternalFilesDir(null)?.absolutePath.toString() + "/RelaxIndia/Documents")
             if (!imageDirectory.exists()) {
                 imageDirectory.mkdirs()
             }
