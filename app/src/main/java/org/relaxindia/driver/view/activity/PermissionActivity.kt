@@ -18,37 +18,40 @@ class PermissionActivity : AppCompatActivity() {
     }
 
     override fun onResume() {
+        val intent = Intent(this, MainActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(intent)
         super.onResume()
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            if (Environment.isExternalStorageManager()) {
-                val intent = Intent(this, MainActivity::class.java)
-                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                startActivity(intent)
-            } else {
-                //request for the permission
-
-                val builder = AlertDialog.Builder(this)
-                builder.setTitle("Storage Permission")
-                builder.setMessage("Please grant storage permission to access sqlite file.")
-
-                // add a button
-                builder.setPositiveButton("OK", DialogInterface.OnClickListener { dialog, which ->
-                    val intent = Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION)
-                    val uri = Uri.fromParts("package", packageName, null)
-                    intent.data = uri
-                    startActivity(intent)
-                })
-                val dialog = builder.create()
-                dialog.setCanceledOnTouchOutside(false)
-                dialog.show()
-
-
-            }
-        } else {
-            val intent = Intent(this, MainActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            startActivity(intent)
-        }
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+//            if (Environment.isExternalStorageManager()) {
+//                val intent = Intent(this, MainActivity::class.java)
+//                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+//                startActivity(intent)
+//            } else {
+//                //request for the permission
+//
+//                val builder = AlertDialog.Builder(this)
+//                builder.setTitle("Storage Permission")
+//                builder.setMessage("Please grant storage permission to access sqlite file.")
+//
+//                // add a button
+//                builder.setPositiveButton("OK", DialogInterface.OnClickListener { dialog, which ->
+//                    val intent = Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION)
+//                    val uri = Uri.fromParts("package", packageName, null)
+//                    intent.data = uri
+//                    startActivity(intent)
+//                })
+//                val dialog = builder.create()
+//                dialog.setCanceledOnTouchOutside(false)
+//                dialog.show()
+//
+//
+//            }
+//        } else {
+//            val intent = Intent(this, MainActivity::class.java)
+//            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+//            startActivity(intent)
+//        }
     }
 
 }
