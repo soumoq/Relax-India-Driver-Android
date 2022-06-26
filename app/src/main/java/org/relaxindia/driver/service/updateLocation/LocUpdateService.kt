@@ -34,6 +34,8 @@ class LocUpdateService : Service() {
                     val updateInfo = HashMap<String, Any>()
                     updateInfo["lat"] = gpsTracker.latitude.toString()
                     updateInfo["lon"] = gpsTracker.longitude.toString()
+                    val currentTime = Calendar.getInstance().time;
+                    updateInfo["dateTime"] = currentTime.toString();
                     updateInfo["locationActive"] = App.isLocationEnabled(this@LocUpdateService)
                     val database = FirebaseDatabase.getInstance().reference.child("driver_data")
                     val userId: Int = getUserID(this@LocUpdateService).toInt()

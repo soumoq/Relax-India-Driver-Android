@@ -6,17 +6,21 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatDelegate
 import kotlinx.android.synthetic.main.activity_main.*
+import org.relaxindia.driver.BuildConfig
 import org.relaxindia.driver.R
 import org.relaxindia.driver.util.App
 import org.relaxindia.driver.util.toast
 import pub.devrel.easypermissions.AppSettingsDialog
 import pub.devrel.easypermissions.EasyPermissions
+import java.util.*
 
-class MainActivity : AppCompatActivity(),EasyPermissions.PermissionCallbacks {
+class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+
+        app_version.text = "Version: ${BuildConfig.VERSION_NAME.toString()}"
 
         val perms = arrayOf(
             Manifest.permission.ACCESS_FINE_LOCATION,
@@ -73,7 +77,7 @@ class MainActivity : AppCompatActivity(),EasyPermissions.PermissionCallbacks {
         }
     }
 
-    private fun skipActivity(){
+    private fun skipActivity() {
         val sp = applicationContext.getSharedPreferences("user_info", MODE_PRIVATE)
         val id = sp.getString(App.preferenceUserToken, "")
         if (!(id.equals(""))) {
