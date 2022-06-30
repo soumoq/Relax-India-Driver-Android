@@ -34,6 +34,9 @@ import org.relaxindia.driver.util.toast
 import org.relaxindia.driver.view.adapter.NotificationAdapter
 import org.relaxindia.driver.view.adapter.ScheduleBookingAdapter
 import org.relaxindia.driver.viewModel.ApiCallViewModel
+import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 class DashboardActivity : AppCompatActivity() {
 
@@ -254,6 +257,8 @@ class DashboardActivity : AppCompatActivity() {
                 updateInfo["lat"] = gpsTracker.latitude.toString()
                 updateInfo["lon"] = gpsTracker.longitude.toString()
                 updateInfo["phone"] = it.data.phone
+                val currentTime = Calendar.getInstance().time;
+                updateInfo["dateTime"] = currentTime.toString();
                 database = FirebaseDatabase.getInstance().reference.child("driver_data")
                 database.child(App.getUserID(this)).updateChildren(updateInfo)
 

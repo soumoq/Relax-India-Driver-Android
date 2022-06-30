@@ -47,8 +47,8 @@
             android:layout_height="50dp"
             android:layout_marginLeft="15dp"
             android:layout_weight="1"
-            android:text="Register"
             android:backgroundTint="@color/black"
+            android:text="Register"
             android:textAllCaps="true" />
 
     </LinearLayout>
@@ -58,7 +58,17 @@
         android:layout_height="60dp"
         android:layout_gravity="center"
         android:layout_marginTop="20dp"
-        android:src="@drawable/logo"/>
+        android:src="@drawable/logo" />
+
+    <TextView
+        android:id="@+id/app_version"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="15dp"
+        android:gravity="center"
+        android:text="version:1.6.6"
+        android:textColor="@color/black" />
 
 
 </LinearLayout>
